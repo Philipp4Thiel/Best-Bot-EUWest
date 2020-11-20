@@ -2,6 +2,7 @@ package com.pthiel.JavaLauch;
 
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
+import com.pthiel.JavaLauch.command.commands.Help;
 import com.pthiel.JavaLauch.command.commands.Ping;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -16,6 +17,7 @@ public class CommandManager {
 
     public CommandManager() {
         addCommand(new Ping());
+        addCommand(new Help(this));
     }
 
     private void addCommand(ICommand cmd) {
@@ -28,9 +30,13 @@ public class CommandManager {
         commands.add(cmd);
     }
 
+    public List<ICommand> getCommands() {
+        return commands;
+    }
+
 
     @Nullable
-    private ICommand getCommand(String search) {
+    public ICommand getCommand(String search) {
         String searchLower = search.toLowerCase();
 
         for (ICommand cmd : this.commands) {
