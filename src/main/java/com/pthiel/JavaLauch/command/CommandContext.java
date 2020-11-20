@@ -26,7 +26,7 @@ public class CommandContext implements ICommandContext {
         return this.event;
     }
 
-    public List<String> getArgs89() {
+    public List<String> getArgs() {
         return this.args;
     }
 
