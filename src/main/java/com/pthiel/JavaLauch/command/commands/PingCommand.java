@@ -3,6 +3,7 @@ package com.pthiel.JavaLauch.command.commands;
 import com.pthiel.JavaLauch.Config;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 
@@ -13,16 +14,16 @@ public class PingCommand implements ICommand {
 
         jda.getRestPing().queue(
                 (ping) -> ctx.getChannel().sendMessage(
-                        new EmbedBuilder()
-                                .setTitle("Ping:")
+                        EmbedUtils.getDefaultEmbed()
+                                .setTitle("Ping:    :ping_pong:")
                                 .addField("Ping:"
                                         , ping + "ms"
                                         , true)
                                 .addField("WS ping:"
                                         , jda.getGatewayPing() + "ms"
                                         , true)
-                                .setFooter("requested by: " + ctx.getAuthor().getName())
-                                .build()).queue()
+                                .build()
+                ).queue()
         );
     }
 
@@ -33,12 +34,12 @@ public class PingCommand implements ICommand {
     }
 
     @Override
-    public EmbedBuilder getHelp() {
-        return new EmbedBuilder()
-                .setTitle("Ping")
-                .setDescription("It's a ping command what do you expect?")
-                .addField("Usage:"
-                        , "`" + Config.get("prefix") + "ping`"
-                        , true);
+    public String getHelp() {
+        return "It's a ping command what do you expect?";
+    }
+
+    @Override
+    public String getUsage() {
+        return "ping";
     }
 }

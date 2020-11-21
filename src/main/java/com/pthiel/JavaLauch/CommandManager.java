@@ -2,8 +2,7 @@ package com.pthiel.JavaLauch;
 
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.command.commands.HelpCommand;
-import com.pthiel.JavaLauch.command.commands.PingCommand;
+import com.pthiel.JavaLauch.command.commands.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nullable;
@@ -18,6 +17,7 @@ public class CommandManager {
     public CommandManager() {
         addCommand(new PingCommand());
         addCommand(new HelpCommand(this));
+        addCommand(new TestCommand());
     }
 
     private void addCommand(ICommand cmd) {
@@ -35,7 +35,6 @@ public class CommandManager {
     public List<ICommand> getCommands() {
         return commands;
     }
-
 
     @Nullable
     public ICommand getCommand(String search) {
@@ -58,7 +57,7 @@ public class CommandManager {
         String invoke = split[0].toLowerCase();
         ICommand cmd = this.getCommand(invoke);
 
-        if (cmd != null){
+        if (cmd != null) {
             event.getChannel().sendTyping().queue();
             List<String> args = Arrays.asList(split).subList(1, split.length);
 

@@ -9,7 +9,9 @@ public interface ICommand {
 
     String getName();
 
-    EmbedBuilder getHelp();
+    String getHelp();
+
+    String getUsage();
 
     default List<String> getAliases() {
         return List.of();

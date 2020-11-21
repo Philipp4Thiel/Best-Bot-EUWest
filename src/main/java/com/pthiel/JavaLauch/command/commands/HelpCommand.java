@@ -4,6 +4,7 @@ import com.pthiel.JavaLauch.CommandManager;
 import com.pthiel.JavaLauch.Config;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -24,18 +25,17 @@ public class HelpCommand implements ICommand {
         TextChannel channel = ctx.getChannel();
 
         if (args.isEmpty()) {
-            EmbedBuilder builder = new EmbedBuilder();
+            EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
-            builder.setTitle("List of commands");
+            embed.setTitle("List of commands");
 
             manager.getCommands().stream().map(ICommand::getName).forEach(
-                    (it) -> builder.addField(it.substring(0, 1).toUpperCase() + it.substring(1) + ":"
+                    (it) -> embed.addField(it.substring(0, 1).toUpperCase() + it.substring(1) + ":"
                             , "`" + Config.get("prefix") + "help " + it + "`"
                             , true)
-                            .setFooter("requested by: " + ctx.getAuthor().getName())
             );
 
-            channel.sendMessage(builder.build()).queue();
+            channel.sendMessage(embed.build()).queue();
 
             return;
         }
@@ -44,17 +44,26 @@ public class HelpCommand implements ICommand {
         ICommand command = manager.getCommand(search);
 
         if (command == null) {
-            channel.sendMessage(new EmbedBuilder()
-                    .setTitle("Error: Command `" + search + "` not found")
-                    .setDescription("try `-help` to see all commands")
-                    .setFooter("requested by: " + ctx.getAuthor().getName())
-                    .build()).queue();
+            channel.sendMessage(
+                    EmbedUtils.getDefaultEmbed()
+                            .setTitle("Error: Command `" + search + "` not found")
+                            .setDescription("try `-help` to see all commands")
+                            .build()
+            ).queue();
             return;
         }
 
-        channel.sendMessage(command.getHelp()
-                .setFooter("requested by: " + ctx.getAuthor().getName())
-                .build()).queue();
+        channel.sendMessage(
+                EmbedUtils
+                        .getDefaultEmbed()
+                        .setTitle(search.substring(0, 1).toUpperCase() + search.substring(1))
+                        .setDescription(command.getHelp())
+                        .addField(
+                                "Usage",
+                                "`" + Config.get("prefix") + command.getUsage() + "`",
+                                true
+                        ).build()
+        ).queue();
     }
 
     @Override
@@ -63,13 +72,13 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
-    public EmbedBuilder getHelp() {
-        return new EmbedBuilder()
-                .setTitle("Help")
-                .setDescription("Shows the list with commands in the bot")
-                .addField("Usage:"
-                        , "`" + Config.get("prefix") + "help [command]`"
-                        , true);
+    public String getHelp() {
+        return "Shows the list with commands in the bot";
+    }
+
+    @Override
+    public String getUsage() {
+        return "help [command]";
     }
 
     @Override
