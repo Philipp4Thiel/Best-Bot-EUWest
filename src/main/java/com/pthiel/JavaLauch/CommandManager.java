@@ -2,8 +2,8 @@ package com.pthiel.JavaLauch;
 
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.command.commands.Help;
-import com.pthiel.JavaLauch.command.commands.Ping;
+import com.pthiel.JavaLauch.command.commands.HelpCommand;
+import com.pthiel.JavaLauch.command.commands.PingCommand;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nullable;
@@ -16,8 +16,8 @@ public class CommandManager {
     private final List<ICommand> commands = new ArrayList<>();
 
     public CommandManager() {
-        addCommand(new Ping());
-        addCommand(new Help(this));
+        addCommand(new PingCommand());
+        addCommand(new HelpCommand(this));
     }
 
     private void addCommand(ICommand cmd) {

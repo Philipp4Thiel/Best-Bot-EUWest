@@ -8,11 +8,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.List;
 
-public class Help implements ICommand {
+public class HelpCommand implements ICommand {
 
     private final CommandManager manager;
 
-    public Help(CommandManager manager) {
+    public HelpCommand(CommandManager manager) {
         this.manager = manager;
     }
 
