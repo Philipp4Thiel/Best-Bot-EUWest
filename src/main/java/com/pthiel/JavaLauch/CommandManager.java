@@ -21,7 +21,9 @@ public class CommandManager {
     }
 
     private void addCommand(ICommand cmd) {
-        boolean nameFound = this.commands.stream().anyMatch((it) -> it.getName().equalsIgnoreCase(cmd.getName()));
+        boolean nameFound = this.commands.stream().anyMatch(
+                (it) -> it.getName().equalsIgnoreCase(cmd.getName())
+        );
 
         if (nameFound) {
             throw new IllegalArgumentException("A command with this name is already present");

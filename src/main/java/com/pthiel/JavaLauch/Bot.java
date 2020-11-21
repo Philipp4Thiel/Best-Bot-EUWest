@@ -16,7 +16,6 @@ public class Bot {
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_EMOJIS,
-
                 GatewayIntent.DIRECT_MESSAGES
         )
 
