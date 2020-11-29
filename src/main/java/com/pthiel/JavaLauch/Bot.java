@@ -1,23 +1,26 @@
 package com.pthiel.JavaLauch;
 
+import com.pthiel.JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLException;
 
 public class Bot {
 
-    private Bot() throws LoginException {
-        WebUtils.setUserAgent("Javabot by Lauch4P#0001");
+    private Bot() throws LoginException, SQLException {
+        SQLiteDataSource.getConnection();
+
+        WebUtils.setUserAgent("Javabot by Lauch4P#2261");
         EmbedUtils.setEmbedBuilder(
                 () -> new EmbedBuilder()
-                .setColor(0x307f1a)
-                .setFooter("JavaLauch")
+                        .setColor(0x307f1a)
+                        .setFooter("powered by Lauch4P#2261 the most stupid of all bot owners")
         );
 
         JDABuilder.createDefault(
@@ -28,11 +31,11 @@ public class Bot {
                 GatewayIntent.GUILD_EMOJIS
         )
                 .addEventListeners(new Listener())
-                .setActivity(Activity.listening("to crying children in the basement"))
+                .setActivity(Activity.listening("crying children in the basement"))
                 .build();
     }
 
-    public static void main(String[] args) throws LoginException {
+    public static void main(String[] args) throws LoginException, SQLException {
         new Bot();
     }
 }
