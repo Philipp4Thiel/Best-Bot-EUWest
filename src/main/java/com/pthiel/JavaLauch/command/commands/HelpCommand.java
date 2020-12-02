@@ -26,14 +26,14 @@ public class HelpCommand implements ICommand {
 
         String prefix = rawPrefix.equals("<@!776555901724917800>") ? "" : rawPrefix;
 
-                if (args.isEmpty()) {
+        if (args.isEmpty()) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
-            embed.setTitle("List of commands");
+            embed.setTitle("Best Bot EUWest","https://github.com/Philipp4Thiel/Best-Bot-EUWest");
 
             manager.getCommands().stream().map(ICommand::getName).forEach(
                     (it) -> embed.addField(it.substring(0, 1).toUpperCase() + it.substring(1) + ":"
-                            , "`" + prefix + "help " + it + "`"
+                            , "```" + prefix + "help " + it + "```"
                             , true)
             );
 
@@ -49,7 +49,7 @@ public class HelpCommand implements ICommand {
             channel.sendMessage(
                     EmbedUtils.getDefaultEmbed()
                             .setTitle("Error: Command `" + search + "` not found")
-                            .setDescription("try `" + prefix + "help` to see all commands")
+                            .setDescription("```try " + prefix + "help to see all commands```")
                             .build()
             ).queue();
             return;
@@ -59,10 +59,10 @@ public class HelpCommand implements ICommand {
                 EmbedUtils
                         .getDefaultEmbed()
                         .setTitle(search.substring(0, 1).toUpperCase() + search.substring(1))
-                        .setDescription(command.getHelp())
+                        .setDescription("```"+command.getHelp()+"```")
                         .addField(
                                 "Usage",
-                                "`" + prefix + command.getUsage() + "`",
+                                "```" + prefix + command.getUsage() + "```",
                                 true
                         ).build()
         ).queue();

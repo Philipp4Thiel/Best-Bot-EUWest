@@ -16,10 +16,10 @@ public class PingCommand implements ICommand {
                         EmbedUtils.getDefaultEmbed()
                                 .setTitle(":parking::o2::ng:")
                                 .addField("Ping:"
-                                        , "`" + ping + "ms`"
+                                        , "```" + ping + "ms```"
                                         , true)
                                 .addField("WS ping:"
-                                        , "`" + jda.getGatewayPing() + "ms`"
+                                        , "```" + jda.getGatewayPing() + "ms```"
                                         , true)
                                 .build()
                 ).queue()

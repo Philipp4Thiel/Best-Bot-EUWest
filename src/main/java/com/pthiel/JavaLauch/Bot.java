@@ -19,7 +19,7 @@ public class Bot {
         WebUtils.setUserAgent("Javabot by Lauch4P#2261");
         EmbedUtils.setEmbedBuilder(
                 () -> new EmbedBuilder()
-                        .setColor(0x307f1a)
+                        .setColor(0xff00ff)
                         .setFooter("powered by Lauch4P#2261 the most stupid of all bot owners")
         );
 
