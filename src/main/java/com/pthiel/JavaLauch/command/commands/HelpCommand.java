@@ -1,5 +1,6 @@
 package com.pthiel.JavaLauch.command.commands;
 
+import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import com.pthiel.JavaLauch.CommandManager;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
@@ -29,11 +30,14 @@ public class HelpCommand implements ICommand {
         if (args.isEmpty()) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
-            embed.setTitle("Best Bot EUWest","https://github.com/Philipp4Thiel/Best-Bot-EUWest");
+            embed.setTitle("Best Bot EUWest", "https://github.com/Philipp4Thiel/Best-Bot-EUWest");
 
             manager.getCommands().stream().map(ICommand::getName).forEach(
-                    (it) -> embed.addField(it.substring(0, 1).toUpperCase() + it.substring(1) + ":"
-                            , "```" + prefix + "help " + it + "```"
+                    (it) -> embed.addField(""
+                            , new ColoredStringAsciiDoc()
+                                    .addBlueAboveEq(it.substring(0, 1).toUpperCase() + it.substring(1) + ":")
+                                    .addOrange(prefix + "help " + it)
+                                    .build()
                             , true)
             );
 
@@ -49,7 +53,9 @@ public class HelpCommand implements ICommand {
             channel.sendMessage(
                     EmbedUtils.getDefaultEmbed()
                             .setTitle("Error: Command `" + search + "` not found")
-                            .setDescription("```try " + prefix + "help to see all commands```")
+                            .setDescription(new ColoredStringAsciiDoc()
+                                    .addBlueAboveDash("try " + prefix + "help to see all commands")
+                                    .build())
                             .build()
             ).queue();
             return;
@@ -58,12 +64,16 @@ public class HelpCommand implements ICommand {
         channel.sendMessage(
                 EmbedUtils
                         .getDefaultEmbed()
-                        .setTitle(search.substring(0, 1).toUpperCase() + search.substring(1))
-                        .setDescription("```"+command.getHelp()+"```")
+                        .setTitle(search.substring(0, 1).toUpperCase() + search.substring(1) + ":")
+                        .setDescription(new ColoredStringAsciiDoc()
+                                .addBlueAboveDash(command.getHelp())
+                                .build())
                         .addField(
-                                "Usage",
-                                "```" + prefix + command.getUsage() + "```",
-                                true
+                                "Usage:"
+                                , new ColoredStringAsciiDoc()
+                                        .addOrange(prefix + command.getUsage())
+                                        .build()
+                                , true
                         ).build()
         ).queue();
     }

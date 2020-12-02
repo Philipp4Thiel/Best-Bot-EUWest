@@ -1,5 +1,7 @@
 package com.pthiel.JavaLauch.command.commands;
 
+import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
+import com.pthiel.JavaLauch.ColoredStrings.ColoredStringDiff;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -16,10 +18,14 @@ public class PingCommand implements ICommand {
                         EmbedUtils.getDefaultEmbed()
                                 .setTitle(":parking::o2::ng:")
                                 .addField("Ping:"
-                                        , "```" + ping + "ms```"
+                                        , new ColoredStringDiff()
+                                                .addRed(ping + "ms", true)
+                                                .build()
                                         , true)
                                 .addField("WS ping:"
-                                        , "```" + jda.getGatewayPing() + "ms```"
+                                        , new ColoredStringDiff()
+                                        .addRed(jda.getGatewayPing() + "ms",true)
+                                        .build()
                                         , true)
                                 .build()
                 ).queue()
