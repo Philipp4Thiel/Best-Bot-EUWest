@@ -1,5 +1,6 @@
 package com.pthiel.JavaLauch.command.commands.admin;
 
+import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
 import com.pthiel.JavaLauch.data.PrefixMap;
@@ -22,33 +23,51 @@ public class SetPrefixCommand implements ICommand {
         final Member member = ctx.getMember();
         String prefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
 
+        // no perms
         if (!member.hasPermission(Permission.MANAGE_SERVER)) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
             embed.setTitle("ERROR");
-            embed.setDescription("You must have the `manage server` permission to use this command");
+            embed.setDescription(
+                    new ColoredStringAsciiDoc()
+                            .addNormal("you don't have the following permission:")
+                            .addOrange("manage-server")
+                            .build()
+            );
 
             channel.sendMessage(embed.build()).queue();
             return;
         }
 
+        // no prefix
         if (args.isEmpty()) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
             embed.setTitle("ERROR");
-            embed.setDescription("Missing args try `" + prefix + "help`");
+            embed.setDescription(
+                    new ColoredStringAsciiDoc()
+                            .addNormal("your missing following args: ")
+                            .addOrange("prefix")
+                            .build()
+            );
 
             channel.sendMessage(embed.build()).queue();
             return;
         }
 
+        // update prefix
         final String newPrefix = String.join("", args);
         updatePrefix(ctx.getGuild().getIdLong(), newPrefix);
 
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
         embed.setTitle("Updated Prefix");
-        embed.setDescription("updated prefix to `" + newPrefix + "`");
+        embed.setDescription(
+                new ColoredStringAsciiDoc()
+                        .addNormal("Updated prefix to:")
+                        .addOrange(newPrefix)
+                .build()
+        );
 
         channel.sendMessage(embed.build()).queue();
     }

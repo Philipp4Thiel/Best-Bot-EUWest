@@ -3,6 +3,7 @@ package com.pthiel.JavaLauch;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
 import com.pthiel.JavaLauch.command.commands.*;
+import com.pthiel.JavaLauch.command.commands.admin.OwnerPingCommand;
 import com.pthiel.JavaLauch.command.commands.admin.SetPrefixCommand;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -20,6 +21,10 @@ public class CommandManager {
         addCommand(new HelpCommand(this));
         addCommand(new TestCommand());
         addCommand(new SetPrefixCommand());
+        addCommand(new SuggestionsCommand());
+        addCommand(new BugReportCommand());
+        addCommand(new PrintInIDECommand());
+        addCommand(new OwnerPingCommand());
     }
 
     private void addCommand(ICommand cmd) {
@@ -69,6 +74,19 @@ public class CommandManager {
         }
     }
 
+    void handle(boolean ownerPinged, GuildMessageReceivedEvent event, String prefix) {
+        if (!ownerPinged) {
+            handle(event, prefix);
+            return;
+        }
+
+        ICommand cmd = this.getCommand("ownerping");
+        if (cmd != null) {
+            event.getChannel().sendTyping().queue();
+            CommandContext ctx = new CommandContext(event, null);
+            cmd.handle(ctx);
+        }
+    }
 }
 
 

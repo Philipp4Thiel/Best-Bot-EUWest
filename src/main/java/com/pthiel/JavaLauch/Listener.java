@@ -40,6 +40,12 @@ public class Listener extends ListenerAdapter {
         String prefix = PrefixMap.PREFIXES.computeIfAbsent(guildId, (id) -> getPrefix(guildId, guildName));
         String raw = event.getMessage().getContentRaw();
 
+        // I Get Pinged 😠
+        if (raw.contains("<@!" + Config.get("owner_id") + ">")) {
+            LOGGER.info("owner got pinged by: " + event.getAuthor().getName());
+            manager.handle(true, event, prefix);
+        }
+
         // Shutdown
         if (raw.equalsIgnoreCase(prefix + "shutdown") && event.getAuthor().getId().equals(Config.get("owner_id"))) {
             LOGGER.info("shutting down");
@@ -68,15 +74,15 @@ public class Listener extends ListenerAdapter {
                 }
             }
 
-            try (final PreparedStatement insertStatment = SQLiteDataSource
+            try (final PreparedStatement insertStatement = SQLiteDataSource
                     .getConnection()
                     //language-SQLite
                     .prepareStatement("INSERT INTO guild_settings (guild_id, guild_name) VALUES (?, ?)")) {
 
-                insertStatment.setString(1, String.valueOf(guildId));
-                insertStatment.setString(2, guildName);
+                insertStatement.setString(1, String.valueOf(guildId));
+                insertStatement.setString(2, guildName);
 
-                insertStatment.execute();
+                insertStatement.execute();
             }
 
         } catch (SQLException e) {

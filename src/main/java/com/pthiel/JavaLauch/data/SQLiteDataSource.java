@@ -50,7 +50,28 @@ public class SQLiteDataSource {
                     "prefix VARCHAR(255) NOT NULL DEFAULT '" + defaultPrefix + "'" +
                     ");");
 
-            LOGGER.info("Table initialised");
+            LOGGER.info("guild_settings Table initialised"); // suggestions
+
+            // language-SQLite
+            statement.execute("CREATE TABLE IF NOT EXISTS suggestions (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "user_name VARCHAR(20) NOT NULL," +
+                    "guild_name VARCHAR(20) NOT NULL," +
+                    "suggestion VARCHAR(255) NOT NULL" +
+                    ");");
+
+            LOGGER.info("suggestions Table initialised");
+
+            // language-SQLite
+            statement.execute("CREATE TABLE IF NOT EXISTS bugreports (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "user_name VARCHAR(20) NOT NULL," +
+                    "guild_name VARCHAR(20) NOT NULL," +
+                    "bug VARCHAR(255) NOT NULL" +
+                    ");");
+
+            LOGGER.info("bugreport Table initialised");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

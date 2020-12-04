@@ -12,7 +12,6 @@ import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
 
 public class Bot {
-
     private Bot() throws LoginException, SQLException {
         SQLiteDataSource.getConnection();
 
