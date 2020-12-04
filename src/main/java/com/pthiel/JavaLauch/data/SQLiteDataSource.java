@@ -19,20 +19,23 @@ public class SQLiteDataSource {
 
     static {
         try {
-            final File dbFile = new File("database.db");
+            final File dbFile = new File("src/randomStuff/db/database.db");
 
             if (!dbFile.exists()) {
+                LOGGER.info("database does not exist");
                 if (dbFile.createNewFile()) {
                     LOGGER.info("Created database file");
                 } else {
                     LOGGER.info("Could not create database file");
                 }
+            } else {
+                LOGGER.info("database already exists");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        config.setJdbcUrl("jdbc:sqlite:database.db");
+        config.setJdbcUrl("jdbc:sqlite:src/randomStuff/db/database.db");
         config.setConnectionTestQuery("SELECT 1");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
