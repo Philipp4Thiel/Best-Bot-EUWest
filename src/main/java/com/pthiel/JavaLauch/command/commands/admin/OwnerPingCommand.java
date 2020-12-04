@@ -1,5 +1,6 @@
 package com.pthiel.JavaLauch.command.commands.admin;
 
+import com.pthiel.JavaLauch.Config;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -11,8 +12,8 @@ public class OwnerPingCommand implements ICommand {
 
         ctx.getChannel().sendMessage(
                 EmbedUtils.getDefaultEmbed()
-                        .setDescription(author + " stop pinging my owner")
-                        .setImage("https://raw.githubusercontent.com/Philipp4Thiel/Best-Bot-EUWest/master/randomStuff/getoutofmyroomimplaingWOW.png")
+                        .setDescription("Shame on you " + ctx.getAuthor().getAsMention() + " for pinging my stupid boss")
+                        .setImage(Config.get("png_path") + "getoutofmyroomimplaingWOW.png")
                         .build()
         ).queue();
     }

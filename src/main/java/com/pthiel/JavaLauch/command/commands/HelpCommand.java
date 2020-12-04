@@ -23,11 +23,9 @@ public class HelpCommand implements ICommand {
     public void handle(CommandContext ctx) {
         List<String> args = ctx.getArgs();
         TextChannel channel = ctx.getChannel();
-        String rawPrefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
+        String prefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
 
-        String prefix = rawPrefix.equals("<@!776555901724917800>") ? "" : rawPrefix;
-
-        if (args.isEmpty()) {
+        if (args == null || args.isEmpty()) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
             embed.setTitle("Best Bot EUWest", "https://github.com/Philipp4Thiel/Best-Bot-EUWest");
@@ -95,6 +93,6 @@ public class HelpCommand implements ICommand {
 
     @Override
     public List<String> getAliases() {
-        return List.of("commands", "cmds", "commandlist");
+        return List.of("commands", "cmds", "commandlist","selfping");
     }
 }

@@ -74,13 +74,17 @@ public class CommandManager {
         }
     }
 
-    void handle(boolean ownerPinged, GuildMessageReceivedEvent event, String prefix) {
-        if (!ownerPinged) {
-            handle(event, prefix);
+    void handle(String cmdName, GuildMessageReceivedEvent event, String prefix) {
+
+        String key = Config.get("random_key");
+
+        if (!cmdName.startsWith(key)) {
             return;
         }
 
-        ICommand cmd = this.getCommand("ownerping");
+        cmdName = cmdName.replaceFirst(key, "");
+
+        ICommand cmd = this.getCommand(cmdName);
         if (cmd != null) {
             event.getChannel().sendTyping().queue();
             CommandContext ctx = new CommandContext(event, null);

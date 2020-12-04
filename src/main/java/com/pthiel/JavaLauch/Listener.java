@@ -3,6 +3,7 @@ package com.pthiel.JavaLauch;
 import com.pthiel.JavaLauch.data.PrefixMap;
 import com.pthiel.JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.BotCommons;
+import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -20,10 +21,14 @@ public class Listener extends ListenerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
     private final CommandManager manager = new CommandManager();
+    private SelfUser botUser;
+    private long botUserID;
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        LOGGER.info("{} is ready", event.getJDA().getSelfUser().getAsTag());
+        botUser = event.getJDA().getSelfUser();
+        botUserID = botUser.getIdLong();
+        LOGGER.info("{} is ready", botUser.getAsTag());
     }
 
 
@@ -40,10 +45,15 @@ public class Listener extends ListenerAdapter {
         String prefix = PrefixMap.PREFIXES.computeIfAbsent(guildId, (id) -> getPrefix(guildId, guildName));
         String raw = event.getMessage().getContentRaw();
 
-        // I Get Pinged 😠
+        String key = Config.get("random_key");
+        // Owner Gets Pinged 😠
+        if (raw.equals("<@!" + botUserID + ">")) {
+            manager.handle(key + "selfping", event, prefix);
+        }
+
+        // Owner Gets Pinged 😠
         if (raw.contains("<@!" + Config.get("owner_id") + ">")) {
-            LOGGER.info("owner got pinged by: " + event.getAuthor().getName());
-            manager.handle(true, event, prefix);
+            manager.handle(key + "ownerping", event, prefix);
         }
 
         // Shutdown
