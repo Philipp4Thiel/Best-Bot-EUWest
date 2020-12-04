@@ -77,6 +77,11 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
+    public void handle(CommandContext ctx, boolean notAsCmd) {
+        handle(ctx);
+    }
+
+    @Override
     public String getName() {
         return "help";
     }

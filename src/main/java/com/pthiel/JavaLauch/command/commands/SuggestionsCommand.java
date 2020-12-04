@@ -64,6 +64,11 @@ public class SuggestionsCommand implements ICommand {
     }
 
     @Override
+    public void handle(CommandContext ctx, boolean notAsCmd) {
+        return;
+    }
+
+    @Override
     public String getName() {
         return "suggest";
     }

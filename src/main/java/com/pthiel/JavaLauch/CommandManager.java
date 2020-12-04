@@ -88,7 +88,7 @@ public class CommandManager {
         if (cmd != null) {
             event.getChannel().sendTyping().queue();
             CommandContext ctx = new CommandContext(event, null);
-            cmd.handle(ctx);
+            cmd.handle(ctx, true);
         }
     }
 }
