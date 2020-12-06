@@ -30,7 +30,7 @@ public class Bot {
                 GatewayIntent.GUILD_EMOJIS
         )
                 .addEventListeners(new Listener())
-                .setActivity(Activity.listening("crying children in the basement"))
+                .setActivity(Activity.playing("ping me for help"))
                 .build();
     }
 

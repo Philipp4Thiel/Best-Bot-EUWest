@@ -45,6 +45,7 @@ public class SQLiteDataSource {
         try (final Statement statement = getConnection().createStatement()) {
             final String defaultPrefix = Config.get("prefix");
 
+            // guild_settings Table
             // language=SQLite
             statement.execute("CREATE TABLE IF NOT EXISTS guild_settings (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -55,6 +56,7 @@ public class SQLiteDataSource {
 
             LOGGER.info("guild_settings Table initialised"); // suggestions
 
+            // suggestion Table
             // language-SQLite
             statement.execute("CREATE TABLE IF NOT EXISTS suggestions (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -65,6 +67,7 @@ public class SQLiteDataSource {
 
             LOGGER.info("suggestions Table initialised");
 
+            // bug Table
             // language-SQLite
             statement.execute("CREATE TABLE IF NOT EXISTS bugreports (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +

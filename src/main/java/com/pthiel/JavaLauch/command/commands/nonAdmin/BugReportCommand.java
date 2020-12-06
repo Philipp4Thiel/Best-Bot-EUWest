@@ -1,4 +1,4 @@
-package com.pthiel.JavaLauch.command.commands;
+package com.pthiel.JavaLauch.command.commands.nonAdmin;
 
 import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import com.pthiel.JavaLauch.command.CommandContext;

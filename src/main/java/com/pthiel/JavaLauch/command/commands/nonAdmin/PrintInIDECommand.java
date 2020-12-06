@@ -1,9 +1,8 @@
-package com.pthiel.JavaLauch.command.commands;
+package com.pthiel.JavaLauch.command.commands.nonAdmin;
 
 import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

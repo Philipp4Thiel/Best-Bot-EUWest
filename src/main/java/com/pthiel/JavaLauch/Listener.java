@@ -1,5 +1,6 @@
 package com.pthiel.JavaLauch;
 
+import com.pthiel.JavaLauch.NonCommand.MessageManager;
 import com.pthiel.JavaLauch.data.PrefixMap;
 import com.pthiel.JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.BotCommons;
@@ -21,6 +22,7 @@ public class Listener extends ListenerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
     private final CommandManager manager = new CommandManager();
+    private final MessageManager msgManager = new MessageManager();
     private SelfUser botUser;
     private long botUserID;
 
@@ -46,12 +48,13 @@ public class Listener extends ListenerAdapter {
         String raw = event.getMessage().getContentRaw();
 
         String key = Config.get("random_key");
-        // Owner Gets Pinged 😠
+
+        // Bot Gets Pinged (different Help)
         if (raw.equals("<@!" + botUserID + ">")) {
             manager.handle(key + "selfping", event, prefix);
         }
 
-        // Owner Gets Pinged 😠
+        // Owner Gets Pinged (fuck em)
         if (raw.contains("<@!" + Config.get("owner_id") + ">")) {
             manager.handle(key + "ownerping", event, prefix);
         }
@@ -61,13 +64,14 @@ public class Listener extends ListenerAdapter {
             LOGGER.info("shutting down");
             event.getJDA().shutdown();
             BotCommons.shutdown(event.getJDA());
-
-            return;
         }
 
         if (raw.startsWith(prefix)) {
             manager.handle(event, prefix);
         }
+
+        // handle msg
+        msgManager.handle(event);
     }
 
     private String getPrefix(long guildId, String guildName) {

@@ -1,5 +1,6 @@
 /.env
-/src/randomStuff/db/database.db
+/src/randomStuff/db/
 /target/
 /.idea/
 /JavaLauchBot.iml
+/database.db

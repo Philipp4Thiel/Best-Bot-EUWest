@@ -1,6 +1,7 @@
 package com.pthiel.JavaLauch.command.commands.admin;
 
 import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
+import com.pthiel.JavaLauch.Config;
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
 import com.pthiel.JavaLauch.data.PrefixMap;
@@ -22,9 +23,11 @@ public class SetPrefixCommand implements ICommand {
         final List<String> args = ctx.getArgs();
         final Member member = ctx.getMember();
         String prefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
+        long memberId = member.getIdLong();
+        long ownerId = Long.parseLong(Config.get("owner_id"));
 
         // no perms
-        if (!member.hasPermission(Permission.MANAGE_SERVER)) {
+        if (!member.hasPermission(Permission.MANAGE_SERVER) && ownerId != memberId) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
             embed.setTitle("ERROR");

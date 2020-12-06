@@ -2,9 +2,9 @@ package com.pthiel.JavaLauch;
 
 import com.pthiel.JavaLauch.command.CommandContext;
 import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.command.commands.*;
 import com.pthiel.JavaLauch.command.commands.admin.OwnerPingCommand;
 import com.pthiel.JavaLauch.command.commands.admin.SetPrefixCommand;
+import com.pthiel.JavaLauch.command.commands.nonAdmin.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nullable;
