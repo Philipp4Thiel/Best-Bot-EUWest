@@ -1,4 +1,4 @@
-package com.pthiel.JavaLauch.command;
+package JavaLauch.command;
 
 import java.util.List;
 

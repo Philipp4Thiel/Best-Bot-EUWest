@@ -1,4 +1,4 @@
-package com.pthiel.JavaLauch.command;
+package JavaLauch.command;
 
 import me.duncte123.botcommons.commands.ICommandContext;
 import net.dv8tion.jda.api.entities.Guild;

@@ -1,8 +1,8 @@
-package com.pthiel.JavaLauch;
+package JavaLauch;
 
-import com.pthiel.JavaLauch.NonCommand.MessageManager;
-import com.pthiel.JavaLauch.data.PrefixMap;
-import com.pthiel.JavaLauch.data.SQLiteDataSource;
+import JavaLauch.NonCommand.MessageManager;
+import JavaLauch.data.PrefixMap;
+import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.BotCommons;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
@@ -53,12 +53,12 @@ public class Listener extends ListenerAdapter {
         if (raw.equals("<@!" + botUserID + ">")) {
             manager.handle(key + "selfping", event, prefix);
         }
-
+/*
         // Owner Gets Pinged (fuck em)
         if (raw.contains("<@!" + Config.get("owner_id") + ">")) {
             manager.handle(key + "ownerping", event, prefix);
         }
-
+*/
         // Shutdown
         if (raw.equalsIgnoreCase(prefix + "shutdown") && event.getAuthor().getId().equals(Config.get("owner_id"))) {
             LOGGER.info("shutting down");
@@ -71,7 +71,7 @@ public class Listener extends ListenerAdapter {
         }
 
         // handle msg
-        msgManager.handle(event);
+        //msgManager.handle(event);
     }
 
     private String getPrefix(long guildId, String guildName) {

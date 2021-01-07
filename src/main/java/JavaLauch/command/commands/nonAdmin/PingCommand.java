@@ -1,9 +1,8 @@
-package com.pthiel.JavaLauch.command.commands.nonAdmin;
+package JavaLauch.command.commands.nonAdmin;
 
-import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import com.pthiel.JavaLauch.ColoredStrings.ColoredStringDiff;
-import com.pthiel.JavaLauch.command.CommandContext;
-import com.pthiel.JavaLauch.command.ICommand;
+import JavaLauch.ColoredStrings.ColoredStringDiff;
+import JavaLauch.command.CommandContext;
+import JavaLauch.command.ICommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.JDA;
 

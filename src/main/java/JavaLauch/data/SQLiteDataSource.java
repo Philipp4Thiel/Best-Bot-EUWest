@@ -1,6 +1,6 @@
-package com.pthiel.JavaLauch.data;
+package JavaLauch.data;
 
-import com.pthiel.JavaLauch.Config;
+import JavaLauch.Config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;

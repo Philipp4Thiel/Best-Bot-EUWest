@@ -4,3 +4,5 @@
 /.idea/
 /JavaLauchBot.iml
 /database.db
+/.project
+/.classpath

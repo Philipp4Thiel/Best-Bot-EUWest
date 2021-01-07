@@ -1,10 +1,10 @@
-package com.pthiel.JavaLauch.command.commands.nonAdmin;
+package JavaLauch.command.commands.nonAdmin;
 
-import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import com.pthiel.JavaLauch.CommandManager;
-import com.pthiel.JavaLauch.command.CommandContext;
-import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.data.PrefixMap;
+import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
+import JavaLauch.CommandManager;
+import JavaLauch.command.CommandContext;
+import JavaLauch.command.ICommand;
+import JavaLauch.data.PrefixMap;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;

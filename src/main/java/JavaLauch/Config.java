@@ -1,4 +1,4 @@
-package com.pthiel.JavaLauch;
+package JavaLauch;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

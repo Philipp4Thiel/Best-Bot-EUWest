@@ -1,11 +1,11 @@
-package com.pthiel.JavaLauch.command.commands.admin;
+package JavaLauch.command.commands.admin;
 
-import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import com.pthiel.JavaLauch.Config;
-import com.pthiel.JavaLauch.command.CommandContext;
-import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.data.PrefixMap;
-import com.pthiel.JavaLauch.data.SQLiteDataSource;
+import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
+import JavaLauch.Config;
+import JavaLauch.command.CommandContext;
+import JavaLauch.command.ICommand;
+import JavaLauch.data.PrefixMap;
+import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -22,19 +22,18 @@ public class SetPrefixCommand implements ICommand {
         final TextChannel channel = ctx.getChannel();
         final List<String> args = ctx.getArgs();
         final Member member = ctx.getMember();
-        String prefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
         long memberId = member.getIdLong();
         long ownerId = Long.parseLong(Config.get("owner_id"));
 
         // no perms
-        if (!member.hasPermission(Permission.MANAGE_SERVER) && ownerId != memberId) {
+        if (!member.hasPermission(Permission.ADMINISTRATOR) && ownerId != memberId) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
             embed.setTitle("ERROR");
             embed.setDescription(
                     new ColoredStringAsciiDoc()
                             .addNormal("you don't have the following permission:")
-                            .addOrange("manage-server")
+                            .addOrange("admin")
                             .build()
             );
 

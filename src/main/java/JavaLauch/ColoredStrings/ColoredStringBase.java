@@ -1,4 +1,4 @@
-package com.pthiel.JavaLauch.ColoredStrings;
+package JavaLauch.ColoredStrings;
 
 public class ColoredStringBase {
     public String build() {

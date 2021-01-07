@@ -1,10 +1,10 @@
-package com.pthiel.JavaLauch;
+package JavaLauch;
 
-import com.pthiel.JavaLauch.command.CommandContext;
-import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.command.commands.admin.OwnerPingCommand;
-import com.pthiel.JavaLauch.command.commands.admin.SetPrefixCommand;
-import com.pthiel.JavaLauch.command.commands.nonAdmin.*;
+import JavaLauch.command.commands.admin.OwnerPingCommand;
+import JavaLauch.command.commands.admin.SetPrefixCommand;
+import JavaLauch.command.commands.nonAdmin.*;
+import JavaLauch.command.CommandContext;
+import JavaLauch.command.ICommand;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nullable;
@@ -24,7 +24,8 @@ public class CommandManager {
         addCommand(new SuggestionsCommand());
         addCommand(new BugReportCommand());
         addCommand(new PrintInIDECommand());
-        addCommand(new OwnerPingCommand());
+        //addCommand(new OwnerPingCommand());
+        addCommand(new SpamCommand());
     }
 
     private void addCommand(ICommand cmd) {

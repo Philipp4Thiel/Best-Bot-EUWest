@@ -1,4 +1,4 @@
-package com.pthiel.JavaLauch.data;
+package JavaLauch.data;
 
 import java.util.HashMap;
 import java.util.Map;

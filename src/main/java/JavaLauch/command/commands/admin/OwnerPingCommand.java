@@ -1,8 +1,8 @@
-package com.pthiel.JavaLauch.command.commands.admin;
+package JavaLauch.command.commands.admin;
 
-import com.pthiel.JavaLauch.Config;
-import com.pthiel.JavaLauch.command.CommandContext;
-import com.pthiel.JavaLauch.command.ICommand;
+import JavaLauch.Config;
+import JavaLauch.command.CommandContext;
+import JavaLauch.command.ICommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.entities.Member;
 

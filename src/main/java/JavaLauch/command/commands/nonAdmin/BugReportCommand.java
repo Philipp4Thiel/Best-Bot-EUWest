@@ -1,9 +1,9 @@
-package com.pthiel.JavaLauch.command.commands.nonAdmin;
+package JavaLauch.command.commands.nonAdmin;
 
-import com.pthiel.JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import com.pthiel.JavaLauch.command.CommandContext;
-import com.pthiel.JavaLauch.command.ICommand;
-import com.pthiel.JavaLauch.data.SQLiteDataSource;
+import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
+import JavaLauch.command.CommandContext;
+import JavaLauch.command.ICommand;
+import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -11,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SuggestionsCommand implements ICommand {
-
-
+public class BugReportCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx) {
 
@@ -26,7 +24,7 @@ public class SuggestionsCommand implements ICommand {
             embed.setDescription(
                     new ColoredStringAsciiDoc()
                             .addNormal("your missing following args: ")
-                            .addOrange("suggestion")
+                            .addOrange("bug")
                             .build()
             );
 
@@ -36,16 +34,16 @@ public class SuggestionsCommand implements ICommand {
 
         String userName = ctx.getAuthor().getAsTag();
         String guildName = ctx.getGuild().getName();
-        String suggestion = String.join(" ", args);
+        String bug = String.join(" ", args);
 
         try (final PreparedStatement insertStatement = SQLiteDataSource
                 .getConnection()
                 //language-SQLite
-                .prepareStatement("INSERT INTO suggestions (user_name, guild_name, suggestion) VALUES (?, ?, ?)")) {
+                .prepareStatement("INSERT INTO bugreports (user_name, guild_name, bug) VALUES (?, ?, ?)")) {
 
             insertStatement.setString(1, userName);
             insertStatement.setString(2, guildName);
-            insertStatement.setString(3, suggestion);
+            insertStatement.setString(3, bug);
 
             insertStatement.execute();
 
@@ -54,10 +52,10 @@ public class SuggestionsCommand implements ICommand {
         }
 
         ctx.getChannel().sendMessage(EmbedUtils.getDefaultEmbed()
-                .setTitle("Submitted suggestion")
+                .setTitle("Bugreport submitted")
                 .setDescription(
                         new ColoredStringAsciiDoc()
-                                .addOrange(suggestion)
+                                .addOrange(bug)
                                 .build()
                 )
                 .build()).queue();
@@ -70,21 +68,21 @@ public class SuggestionsCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "suggest";
+        return "bugreport";
     }
 
     @Override
     public String getHelp() {
-        return "A command to make a suggestion (Stolen from Lukas xD)";
+        return "A command to send a bugreport";
     }
 
     @Override
     public String getUsage() {
-        return "suggest <suggestion>";
+        return "report <bug>";
     }
 
     @Override
     public List<String> getAliases() {
-        return List.of("suggestions", "suggestion");
+        return List.of("bug", "report");
     }
 }
