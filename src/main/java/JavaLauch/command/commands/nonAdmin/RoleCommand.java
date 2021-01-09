@@ -24,8 +24,6 @@ public class RoleCommand implements IPublicCommand {
 
     public RoleCommand() throws FileNotFoundException, JsonProcessingException {
 
-        // TODO
-        //  json -> map
         ObjectMapper mapper = new ObjectMapper();
         roles = mapper.readValue(new Scanner(role_json).next(), Map.class);
     }
