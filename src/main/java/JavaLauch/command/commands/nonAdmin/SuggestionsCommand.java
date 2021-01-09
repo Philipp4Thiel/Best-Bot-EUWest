@@ -2,20 +2,20 @@ package JavaLauch.command.commands.nonAdmin;
 
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import JavaLauch.command.CommandContext;
-import JavaLauch.command.ICommand;
+import JavaLauch.command.IPublicCommand;
 import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SuggestionsCommand implements ICommand {
-
+public class SuggestionsCommand implements IPublicCommand {
 
     @Override
-    public void handle(CommandContext ctx) {
+    public void handlePublic(CommandContext ctx) {
 
         List<String> args = ctx.getArgs();
 
@@ -64,27 +64,47 @@ public class SuggestionsCommand implements ICommand {
     }
 
     @Override
-    public void handle(CommandContext ctx, boolean notAsCmd) {
-        return;
-    }
-
-    @Override
     public String getName() {
         return "suggest";
     }
 
     @Override
-    public String getHelp() {
-        return "A command to make a suggestion (Stolen from Lukas xD)";
+    public void handleOwner(CommandContext ctx) {
+        this.handlePublic(ctx);
     }
 
     @Override
-    public String getUsage() {
-        return "suggest <suggestion>";
+    public MessageEmbed getPublicHelp(String prefix) {
+        EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
+
+        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setDescription("A command to send a suggestion directly into my todolist.");
+
+        // general use
+        embed.addField("", new ColoredStringAsciiDoc()
+                .addBlueAboveEq("general use:")
+                .addOrange(prefix + "suggest <suggestion>")
+                .build(), false);
+
+        return embed.build();    }
+
+    @Override
+    public MessageEmbed getAdminHelp(String prefix) {
+        return null;
+    }
+
+    @Override
+    public MessageEmbed getOwnerHelp(String prefix) {
+        return null;
     }
 
     @Override
     public List<String> getAliases() {
         return List.of("suggestions", "suggestion");
+    }
+
+    @Override
+    public void handleAdmin(CommandContext ctx) {
+        this.handlePublic(ctx);
     }
 }

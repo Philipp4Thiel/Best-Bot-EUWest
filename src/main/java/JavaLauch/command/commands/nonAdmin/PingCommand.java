@@ -1,15 +1,18 @@
 package JavaLauch.command.commands.nonAdmin;
 
+import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import JavaLauch.ColoredStrings.ColoredStringDiff;
 import JavaLauch.command.CommandContext;
-import JavaLauch.command.ICommand;
+import JavaLauch.command.IPublicCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class PingCommand implements ICommand {
+public class PingCommand implements IPublicCommand {
 
     @Override
-    public void handle(CommandContext ctx) {
+    public void handlePublic(CommandContext ctx) {
         JDA jda = ctx.getJDA();
 
         jda.getRestPing().queue(
@@ -32,22 +35,42 @@ public class PingCommand implements ICommand {
     }
 
     @Override
-    public void handle(CommandContext ctx, boolean notAsCmd) {
-        return;
-    }
-
-    @Override
     public String getName() {
         return "ping";
     }
 
     @Override
-    public String getHelp() {
-        return "It's a ping command what do you expect?";
+    public void handleOwner(CommandContext ctx) {
+        this.handlePublic(ctx);
     }
 
     @Override
-    public String getUsage() {
-        return "ping";
+    public MessageEmbed getPublicHelp(String prefix) {
+        EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
+
+        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setDescription("A simple ping command.");
+
+        // general use
+        embed.addField("", new ColoredStringAsciiDoc()
+                .addBlueAboveEq("general use")
+                .addOrange(prefix + "ping")
+                .build(), false);
+
+        return embed.build();    }
+
+    @Override
+    public MessageEmbed getAdminHelp(String prefix) {
+        return getPublicHelp(prefix);
+    }
+
+    @Override
+    public MessageEmbed getOwnerHelp(String prefix) {
+        return getPublicHelp(prefix);
+    }
+
+    @Override
+    public void handleAdmin(CommandContext ctx) {
+        this.handlePublic(ctx);
     }
 }

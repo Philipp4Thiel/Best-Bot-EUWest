@@ -3,22 +3,24 @@ package JavaLauch.command.commands.admin;
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import JavaLauch.Config;
 import JavaLauch.command.CommandContext;
-import JavaLauch.command.ICommand;
+import JavaLauch.command.IAdminCommand;
 import JavaLauch.data.PrefixMap;
 import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SetPrefixCommand implements ICommand {
+public class SetPrefixCommand implements IAdminCommand {
+
     @Override
-    public void handle(CommandContext ctx) {
+    public void handleAdmin(CommandContext ctx) {
         final TextChannel channel = ctx.getChannel();
         final List<String> args = ctx.getArgs();
         final Member member = ctx.getMember();
@@ -68,15 +70,10 @@ public class SetPrefixCommand implements ICommand {
                 new ColoredStringAsciiDoc()
                         .addNormal("Updated prefix to:")
                         .addOrange(newPrefix)
-                .build()
+                        .build()
         );
 
         channel.sendMessage(embed.build()).queue();
-    }
-
-    @Override
-    public void handle(CommandContext ctx, boolean notAsCmd) {
-        return;
     }
 
     @Override
@@ -85,13 +82,29 @@ public class SetPrefixCommand implements ICommand {
     }
 
     @Override
-    public String getHelp() {
-        return "a commands for admins to change the prefix";
+    public void handleOwner(CommandContext ctx) {
+        this.handleAdmin(ctx);
     }
 
     @Override
-    public String getUsage() {
-        return "setprefix <newprefix>";
+    public MessageEmbed getAdminHelp(String prefix) {
+        EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
+
+        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setDescription("A command for admins to change the prefix of the bot on this server.");
+
+        // general use
+        embed.addField("", new ColoredStringAsciiDoc()
+                .addBlueAboveEq("general use:")
+                .addOrange(prefix + "setprefix <new prefix>")
+                .build(), false);
+
+        return embed.build();
+    }
+
+    @Override
+    public MessageEmbed getOwnerHelp(String prefix) {
+        return getAdminHelp(prefix);
     }
 
     private void updatePrefix(long guildId, String newPrefix) {

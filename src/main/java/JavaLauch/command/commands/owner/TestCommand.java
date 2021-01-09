@@ -1,15 +1,18 @@
-package JavaLauch.command.commands.nonAdmin;
+package JavaLauch.command.commands.owner;
 
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import JavaLauch.ColoredStrings.ColoredStringDiff;
 import JavaLauch.command.CommandContext;
-import JavaLauch.command.ICommand;
+import JavaLauch.command.IOwnerCommand;
+import JavaLauch.data.PrefixMap;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class TestCommand implements ICommand {
+public class TestCommand implements IOwnerCommand {
 
     @Override
-    public void handle(CommandContext ctx) {
+    public void handleOwner(CommandContext ctx) {
         ctx.getChannel().sendMessage(
                 EmbedUtils
                         .getDefaultEmbed()
@@ -43,11 +46,9 @@ public class TestCommand implements ICommand {
                                 , true)
                         .build()
         ).queue();
-    }
-
-    @Override
-    public void handle(CommandContext ctx, boolean notAsCmd) {
-        return;
+        ctx.getChannel().sendMessage("help page testing:").queue();
+        String prefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
+        ctx.getChannel().sendMessage(getOwnerHelp(prefix)).queue();
     }
 
     @Override
@@ -56,12 +57,18 @@ public class TestCommand implements ICommand {
     }
 
     @Override
-    public String getHelp() {
-        return "just a command to test stuff. But this description needs to be really long for testing purposes so you can just ignore the shit that is written in here.";
-    }
+    public MessageEmbed getOwnerHelp(String prefix) {
+        EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
-    @Override
-    public String getUsage() {
-        return "test";
+        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setDescription("This is just a command made for testing purposes.");
+
+        // general use
+        embed.addField("", new ColoredStringAsciiDoc()
+                .addBlueAboveEq("general use:")
+                .addOrange(prefix + "test")
+                .build(), false);
+
+        return embed.build();
     }
 }

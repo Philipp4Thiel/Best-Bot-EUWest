@@ -4,6 +4,7 @@ import JavaLauch.NonCommand.MessageManager;
 import JavaLauch.data.PrefixMap;
 import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.BotCommons;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,10 +23,15 @@ import java.sql.SQLException;
 public class Listener extends ListenerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
-    private final CommandManager manager = new CommandManager();
-    private final MessageManager msgManager = new MessageManager();
+
+        private final CommandManager manager = new CommandManager();
+
+
     private SelfUser botUser;
     private long botUserID;
+
+    public Listener() throws IOException {
+    }
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
@@ -47,31 +54,22 @@ public class Listener extends ListenerAdapter {
         String prefix = PrefixMap.PREFIXES.computeIfAbsent(guildId, (id) -> getPrefix(guildId, guildName));
         String raw = event.getMessage().getContentRaw();
 
-        String key = Config.get("random_key");
-
-        // Bot Gets Pinged (different Help)
+        //  bot gets pinged -> hidden help
         if (raw.equals("<@!" + botUserID + ">")) {
-            manager.handle(key + "selfping", event, prefix);
+            manager.handleHidden("help", event, prefix);
         }
-/*
-        // Owner Gets Pinged (fuck em)
-        if (raw.contains("<@!" + Config.get("owner_id") + ">")) {
-            manager.handle(key + "ownerping", event, prefix);
-        }
-*/
-        // Shutdown
+
+        // shutdown request by owner -> stop bot
         if (raw.equalsIgnoreCase(prefix + "shutdown") && event.getAuthor().getId().equals(Config.get("owner_id"))) {
             LOGGER.info("shutting down");
             event.getJDA().shutdown();
             BotCommons.shutdown(event.getJDA());
         }
 
+        // starts with prefix -> send to command handler
         if (raw.startsWith(prefix)) {
             manager.handle(event, prefix);
         }
-
-        // handle msg
-        //msgManager.handle(event);
     }
 
     private String getPrefix(long guildId, String guildName) {

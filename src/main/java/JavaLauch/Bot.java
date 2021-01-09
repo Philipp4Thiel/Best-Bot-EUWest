@@ -11,12 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
 
-    private Bot() throws LoginException, SQLException {
+    private Bot() throws LoginException, SQLException, IOException {
         LOGGER.info("starting Bot");
 
         SQLiteDataSource.getConnection();
@@ -42,7 +43,7 @@ public class Bot {
                 .build();
     }
 
-    public static void main(String[] args) throws LoginException, SQLException {
+    public static void main(String[] args) throws LoginException, SQLException, IOException {
         new Bot();
     }
 }

@@ -2,18 +2,19 @@ package JavaLauch.command.commands.nonAdmin;
 
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
 import JavaLauch.command.CommandContext;
-import JavaLauch.command.ICommand;
+import JavaLauch.command.IPublicCommand;
 import JavaLauch.data.SQLiteDataSource;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class BugReportCommand implements ICommand {
+public class BugReportCommand implements IPublicCommand {
     @Override
-    public void handle(CommandContext ctx) {
+    public void handlePublic(CommandContext ctx) {
 
         List<String> args = ctx.getArgs();
 
@@ -62,27 +63,48 @@ public class BugReportCommand implements ICommand {
     }
 
     @Override
-    public void handle(CommandContext ctx, boolean notAsCmd) {
-        return;
-    }
-
-    @Override
     public String getName() {
         return "bugreport";
     }
 
     @Override
-    public String getHelp() {
-        return "A command to send a bugreport";
+    public MessageEmbed getPublicHelp(String prefix) {
+        EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
+
+        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setDescription("A command to report a bug. I will check them eventually, but if it is something really important (eg. permission exploit or stuff like this) feel free to ping or dm me.");
+
+        // general use
+        embed.addField("", new ColoredStringAsciiDoc()
+                .addBlueAboveEq("general use:")
+                .addOrange(prefix + "report <bug>")
+                .build(), false);
+
+        return embed.build();
     }
 
     @Override
-    public String getUsage() {
-        return "report <bug>";
+    public MessageEmbed getAdminHelp(String prefix) {
+        return getPublicHelp(prefix);
+    }
+
+    @Override
+    public MessageEmbed getOwnerHelp(String prefix) {
+        return getPublicHelp(prefix);
     }
 
     @Override
     public List<String> getAliases() {
         return List.of("bug", "report");
+    }
+
+    @Override
+    public void handleAdmin(CommandContext ctx) {
+        this.handlePublic(ctx);
+    }
+
+    @Override
+    public void handleOwner(CommandContext ctx) {
+        this.handlePublic(ctx);
     }
 }
