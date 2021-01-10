@@ -27,22 +27,6 @@ public class SetPrefixCommand implements IAdminCommand {
         long memberId = member.getIdLong();
         long ownerId = Long.parseLong(Config.get("owner_id"));
 
-        // no perms
-        if (!member.hasPermission(Permission.ADMINISTRATOR) && ownerId != memberId) {
-            EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
-
-            embed.setTitle("ERROR");
-            embed.setDescription(
-                    new ColoredStringAsciiDoc()
-                            .addNormal("you don't have the following permission:")
-                            .addOrange("admin")
-                            .build()
-            );
-
-            channel.sendMessage(embed.build()).queue();
-            return;
-        }
-
         // no prefix
         if (args.isEmpty()) {
             EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
@@ -60,7 +44,12 @@ public class SetPrefixCommand implements IAdminCommand {
         }
 
         // update prefix
-        final String newPrefix = String.join("", args);
+        String newPrefix = String.join("", args);
+
+        if (newPrefix.equals("please")){
+            newPrefix = "please ";
+        }
+
         updatePrefix(ctx.getGuild().getIdLong(), newPrefix);
 
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();

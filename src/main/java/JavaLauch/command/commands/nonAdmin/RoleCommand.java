@@ -20,7 +20,9 @@ import java.util.*;
 public class RoleCommand implements IPublicCommand {
 
     private final Map<String, List<Long>> roles;
-    private final File role_json = new File("src/randomStuff/db/roles.json");
+    private final static String pathToJson = "src/randomStuff/db/";
+    //private final static String pathToJson = "";
+    private final File role_json = new File(pathToJson + "roles.json");
 
     public RoleCommand() throws FileNotFoundException, JsonProcessingException {
 
@@ -292,7 +294,7 @@ public class RoleCommand implements IPublicCommand {
 
         allMentions.append("||");
 
-        ctx.getChannel().sendMessage( allMentions).queue();
+        ctx.getChannel().sendMessage(allMentions).queue();
         ctx.getChannel().sendMessage(EmbedUtils.getDefaultEmbed()
                 .setTitle("Get Pinged! :pinged:")
                 .setDescription(role + " got pinged by: " + ctx.getMember().getAsMention())
