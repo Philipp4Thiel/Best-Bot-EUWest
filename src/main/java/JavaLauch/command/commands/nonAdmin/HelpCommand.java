@@ -53,7 +53,10 @@ public class HelpCommand implements IPublicCommand, IHiddenCommand {
             return;
         }
         // command does exits -> command specific help
-        channel.sendMessage(cmd.getPublicHelp(prefix)).queue();
+        MessageEmbed help = cmd.getPublicHelp(prefix);
+        if (help != null) {
+            channel.sendMessage(help).queue();
+        }
     }
 
     @Override
@@ -154,7 +157,7 @@ public class HelpCommand implements IPublicCommand, IHiddenCommand {
     public MessageEmbed getPublicHelp(String prefix) {
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
-        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setTitle("Help page of: `" + getName() + "`");
         embed.setDescription("A command that shows you what my bot can or can't do.");
 
         // general use

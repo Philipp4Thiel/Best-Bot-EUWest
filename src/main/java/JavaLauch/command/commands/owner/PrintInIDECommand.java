@@ -20,7 +20,7 @@ public class PrintInIDECommand implements IOwnerCommand {
 
         final List<String> args = ctx.getArgs();
         final String context = String.join(" ", args);
-        ;
+        
         LOGGER.info(context);
 
         ctx.getChannel().sendMessage(
@@ -28,7 +28,7 @@ public class PrintInIDECommand implements IOwnerCommand {
                         .setTitle("Sent to log")
                         .setDescription(
                                 new ColoredStringAsciiDoc()
-                                        .addOrange(" " + context + " ")
+                                        .addOrange(context)
                                         .build()
                         )
                         .build()

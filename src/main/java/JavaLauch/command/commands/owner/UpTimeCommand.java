@@ -1,29 +1,38 @@
 package JavaLauch.command.commands.owner;
 
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import JavaLauch.Listener;
 import JavaLauch.command.CommandContext;
 import JavaLauch.command.IOwnerCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class ShutDownCommand implements IOwnerCommand {
+import java.time.Duration;
+import java.time.Instant;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShutDownCommand.class);
+public class UpTimeCommand implements IOwnerCommand {
+
+    private final Instant start;
+
+
+    public UpTimeCommand() {
+        start = Instant.now();
+    }
 
     @Override
     public String getName() {
-        return "shutdown";
+        return "uptime";
     }
 
     @Override
     public void handleOwner(CommandContext ctx) {
-        ctx.getChannel().sendMessage("force shutdown...").queue();
-        LOGGER.info("force shutdown by "+ctx.getAuthor().getAsTag());
-        System.exit(0);
+        Instant now = Instant.now();
+        Duration timeElapsed = Duration.between(start, now);
+
+        ctx.getChannel().sendMessage(EmbedUtils.getDefaultEmbed()
+                .setTitle("Uptime")
+                .setDescription(timeElapsed.toMinutes() +" minutes")
+                .build()).queue();
     }
 
     @Override
@@ -31,12 +40,12 @@ public class ShutDownCommand implements IOwnerCommand {
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
         embed.setTitle("Help page of: `" + getName()+"`");
-        embed.setDescription("This command is used to force shutdown the bot.");
+        embed.setDescription("This command shows the time since last reboot.");
 
         // general use
         embed.addField("", new ColoredStringAsciiDoc()
                 .addBlueAboveEq("general use:")
-                .addOrange(prefix + "shutdown")
+                .addOrange(prefix + "uptime")
                 .build(), false);
 
         return embed.build();

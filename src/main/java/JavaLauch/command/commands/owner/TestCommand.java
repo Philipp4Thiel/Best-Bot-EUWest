@@ -46,9 +46,6 @@ public class TestCommand implements IOwnerCommand {
                                 , true)
                         .build()
         ).queue();
-        ctx.getChannel().sendMessage("help page testing:").queue();
-        String prefix = PrefixMap.PREFIXES.get(ctx.getGuild().getIdLong());
-        ctx.getChannel().sendMessage(getOwnerHelp(prefix)).queue();
     }
 
     @Override

@@ -16,12 +16,10 @@ public class SQLiteDataSource {
     private static final Logger LOGGER = LoggerFactory.getLogger(SQLiteDataSource.class);
     private static final HikariConfig config = new HikariConfig();
     private static final HikariDataSource ds;
-    private static final String pathToDB = "src/randomStuff/db/";
-    //private static final String pathToDB = "";
 
     static {
         try {
-            final File dbFile = new File(pathToDB + "database.db");
+            final File dbFile = new File("data/database.db");
 
             if (!dbFile.exists()) {
                 LOGGER.info("database does not exist");
@@ -37,7 +35,7 @@ public class SQLiteDataSource {
             e.printStackTrace();
         }
 
-        config.setJdbcUrl("jdbc:sqlite:" + pathToDB + "database.db");
+        config.setJdbcUrl("jdbc:sqlite:data/database.db");
         config.setConnectionTestQuery("SELECT 1");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");

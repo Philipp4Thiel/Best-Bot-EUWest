@@ -41,10 +41,16 @@ public class SpamCommand implements IPublicCommand {
 
         if (times > MAX_REPS) {
             times = MAX_REPS;
-            ctx.getChannel().sendMessage("thanks to @xharlock#0001 this command is limited to " + MAX_REPS + " repetitions for non power people").queue();
+            ctx.getChannel().sendMessage("thanks to @xharlock#0001 this command is limited to " + MAX_REPS + " repetitions for non power people || <@!177498563637542921> wanted to get pinged ||").queue();
         }
 
         String msg = String.join(" ", withoutFirst);
+
+        if(ctx.getMessage().getMentionedMembers() != null && !ctx.getMessage().getMentionedMembers().isEmpty()){
+            ctx.getChannel().sendMessage("spam pinging somebody is unfair").queue();
+
+            msg = ctx.getMessage().getAuthor().getAsMention();
+        }
 
         spamMsg(msg, ctx.getChannel(), times);
     }

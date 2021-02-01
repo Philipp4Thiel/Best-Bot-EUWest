@@ -1,29 +1,30 @@
 package JavaLauch.command.commands.owner;
 
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import JavaLauch.Listener;
 import JavaLauch.command.CommandContext;
 import JavaLauch.command.IOwnerCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class ShutDownCommand implements IOwnerCommand {
+public class NickNameCommand implements IOwnerCommand {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShutDownCommand.class);
+    private final JDA bot;
+
+    public NickNameCommand(JDA bot){
+        this.bot = bot;
+    }
 
     @Override
     public String getName() {
-        return "shutdown";
+        return "nick";
     }
 
     @Override
     public void handleOwner(CommandContext ctx) {
-        ctx.getChannel().sendMessage("force shutdown...").queue();
-        LOGGER.info("force shutdown by "+ctx.getAuthor().getAsTag());
-        System.exit(0);
+        String nickname = String.join(" ",ctx.getArgs());
+        ctx.getGuild().getSelfMember().modifyNickname(nickname).queue();
     }
 
     @Override
@@ -31,12 +32,12 @@ public class ShutDownCommand implements IOwnerCommand {
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
         embed.setTitle("Help page of: `" + getName()+"`");
-        embed.setDescription("This command is used to force shutdown the bot.");
+        embed.setDescription("This command is used to change the nickname of the bot on this server.");
 
         // general use
         embed.addField("", new ColoredStringAsciiDoc()
                 .addBlueAboveEq("general use:")
-                .addOrange(prefix + "shutdown")
+                .addOrange(prefix + "nick <new nickname>")
                 .build(), false);
 
         return embed.build();

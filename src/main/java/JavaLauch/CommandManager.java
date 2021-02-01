@@ -3,8 +3,8 @@ package JavaLauch;
 import JavaLauch.command.*;
 import JavaLauch.command.commands.admin.SetPrefixCommand;
 import JavaLauch.command.commands.nonAdmin.*;
-import JavaLauch.command.commands.owner.PrintInIDECommand;
-import JavaLauch.command.commands.owner.TestCommand;
+import JavaLauch.command.commands.owner.*;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class CommandManager {
 
     private final List<ICommand> allCommands = new ArrayList<>();
 
-    public CommandManager() throws IOException {
+    public CommandManager(JDA bot) throws IOException {
 
         // adding commands visible to @everyone
         addPublicCommand(new PingCommand());
@@ -32,15 +32,19 @@ public class CommandManager {
         addPublicCommand(new BugReportCommand());
         addPublicCommand(new SpamCommand());
         addPublicCommand(new RoleCommand());
+
         // adding commands visible to @admin
         addAdminCommand(new SetPrefixCommand());
 
         // adding commands visible to owner
         addOwnerCommand(new TestCommand());
         addOwnerCommand(new PrintInIDECommand());
-        // TODO
-        //  add shutdown
-        //  add reload
+        addOwnerCommand(new UpTimeCommand());
+        addOwnerCommand(new ShutDownCommand());
+        addOwnerCommand(new ReloadCommand());
+        addOwnerCommand(new GetPFPCommand());
+        addOwnerCommand(new SetPresenceCommand(bot));
+        addOwnerCommand(new NickNameCommand(bot));
 
         // adding hidden commands (like help on ping)
         addHiddenCommand(new HelpCommand(this));
@@ -202,10 +206,6 @@ public class CommandManager {
 
     public List<IOwnerCommand> getOwnerCommands() {
         return ownerCommands;
-    }
-
-    public List<IHiddenCommand> getHiddenCommands() {
-        return hiddenCommands;
     }
 }
 

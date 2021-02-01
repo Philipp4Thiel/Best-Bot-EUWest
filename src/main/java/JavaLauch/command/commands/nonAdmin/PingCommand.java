@@ -49,7 +49,7 @@ public class PingCommand implements IPublicCommand {
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
         embed.setTitle("Help page of: `" + getName()+"`");
-        embed.setDescription("A simple ping command.");
+        embed.setDescription("A really simple ping command.");
 
         // general use
         embed.addField("", new ColoredStringAsciiDoc()

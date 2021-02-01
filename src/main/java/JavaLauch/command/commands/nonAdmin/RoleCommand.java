@@ -1,7 +1,6 @@
 package JavaLauch.command.commands.nonAdmin;
 
 import JavaLauch.ColoredStrings.ColoredStringAsciiDoc;
-import JavaLauch.ColoredStrings.ColoredStringDiff;
 import JavaLauch.command.CommandContext;
 import JavaLauch.command.IPublicCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,19 +14,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class RoleCommand implements IPublicCommand {
 
     private final Map<String, List<Long>> roles;
-    private final static String pathToJson = "src/randomStuff/db/";
-    //private final static String pathToJson = "";
-    private final File role_json = new File(pathToJson + "roles.json");
+    private final File role_json = new File("data/roles.json");
 
-    public RoleCommand() throws FileNotFoundException, JsonProcessingException {
-
+    public RoleCommand() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        roles = mapper.readValue(new Scanner(role_json).next(), Map.class);
+        roles = mapper.readValue(Files.readString(Path.of("data/roles.json")).replaceAll("\\R","").replace(" ",""), Map.class);
     }
 
     @Override
@@ -164,14 +162,14 @@ public class RoleCommand implements IPublicCommand {
         embed.addField("", new ColoredStringAsciiDoc()
                 .addBlueAboveEq("Add a new role:")
                 .addNormal("With this you can add a new role.")
-                .addOrange(prefix + "add <role>")
+                .addOrange(prefix + "role add <role>")
                 .build(), false);
 
         // remove
         embed.addField("", new ColoredStringAsciiDoc()
                 .addBlueAboveEq("Remove an existing role:")
                 .addNormal("With this you can remove an existing role.")
-                .addOrange(prefix + "remove <role>")
+                .addOrange(prefix + "role remove <role>")
                 .build(), false);
 
         return embed.build();
@@ -191,7 +189,6 @@ public class RoleCommand implements IPublicCommand {
     public List<String> getAliases() {
         return List.of("roles", "ltp", "lfr", "lfg", "lookingtoplay");
     }
-
 
     // admin only
     void addRole(CommandContext ctx, String role) throws FileNotFoundException {
@@ -352,7 +349,7 @@ public class RoleCommand implements IPublicCommand {
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
         embed.setTitle("Help page of: `" + getName() + "`");
-        embed.setDescription("A command to use the custom role feature of this bot so admins don't have to riot everytime we want new roles (no long term storage until now :sadge: coming soon though).");
+        embed.setDescription("A command to use the custom role feature of this bot so admins don't have to riot everytime we want new roles.");
 
         // general use
         embed.addField("", new ColoredStringAsciiDoc()
