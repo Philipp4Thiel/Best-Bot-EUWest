@@ -1,9 +1,8 @@
-/.env
-/src/randomStuff/db/
-/target/
 /.idea/
-/JavaLauchBot.iml
-/database.db
-/.project
-/.classpath
+/.settings/
 /data/
+/DB from online bot/
+/out/
+/target/
+/.env
+/JavaLauchBot.iml

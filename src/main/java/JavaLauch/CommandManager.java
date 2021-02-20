@@ -21,8 +21,6 @@ public class CommandManager {
 
     private final List<IHiddenCommand> hiddenCommands = new ArrayList<>();
 
-    private final List<ICommand> allCommands = new ArrayList<>();
-
     public CommandManager(JDA bot) throws IOException {
 
         // adding commands visible to @everyone
@@ -45,6 +43,7 @@ public class CommandManager {
         addOwnerCommand(new GetPFPCommand());
         addOwnerCommand(new SetPresenceCommand(bot));
         addOwnerCommand(new NickNameCommand(bot));
+        addOwnerCommand(new DeleteCommand());
 
         // adding hidden commands (like help on ping)
         addHiddenCommand(new HelpCommand(this));
