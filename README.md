@@ -1,1 +1,1 @@
-DiscordBot made with JDA 4 by Lauch4P#2261
+DiscordBot made with JDA by Lauch4P#2261
