@@ -8,10 +8,11 @@ import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class HelpCommand implements IPublicCommand, IHiddenCommand {
+public class HelpCommand implements IPublicCommand, IHiddenCommand, IDmCommand {
 
     private final CommandManager manager;
 
@@ -152,6 +153,12 @@ public class HelpCommand implements IPublicCommand, IHiddenCommand {
     public String getName() {
         return "help";
     }
+/*
+    @Override
+    public String standardizedHelp() {
+        //TODO
+        return null;
+    }*/
 
     @Override
     public MessageEmbed getPublicHelp(String prefix) {
@@ -200,5 +207,13 @@ public class HelpCommand implements IPublicCommand, IHiddenCommand {
                                 .build())
                         .build()
         ).queue();
+    }
+
+    @Override
+    public void handleDM(CommandContext ctx) {
+        JSONObject json = new JSONObject();
+
+        json.put("owner", "Lauch4P#2261");
+        json.put("prefix", "please");
     }
 }

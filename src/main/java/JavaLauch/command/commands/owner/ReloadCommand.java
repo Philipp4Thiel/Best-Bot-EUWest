@@ -6,14 +6,10 @@ import JavaLauch.command.IOwnerCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 public class ReloadCommand implements IOwnerCommand {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReloadCommand.class);
 
     @Override
     public String getName() {

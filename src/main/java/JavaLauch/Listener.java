@@ -174,16 +174,14 @@ public class Listener extends ListenerAdapter {
                 .replaceFirst("(?i)" + Pattern.quote(prefix), "")
                 .split("\\s+"));
 
-        if (args == null || args.isEmpty()) {
+        if (args.isEmpty()) {
             sendDM(user, "wtf that's not a cmd");
         }
 
         String cmd = args.get(0);
 
-        switch (cmd) {
-            case "msg":
-                sendDMOrderedByOwner(args);
-                break;
+        if ("msg".equals(cmd)) {
+            sendDMOrderedByOwner(args);
         }
 
         return true;
