@@ -1,9 +1,0 @@
-/.env
-/src/randomStuff/db/
-/target/
-/.idea/
-/JavaLauchBot.iml
-/database.db
-/.project
-/.classpath
-/data/
