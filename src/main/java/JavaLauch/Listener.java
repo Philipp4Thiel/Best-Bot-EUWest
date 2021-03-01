@@ -111,8 +111,9 @@ public class Listener extends ListenerAdapter {
             manager.handleHidden("help", event, prefix);
         }
 
-        if(raw.toLowerCase().equals("is that")){
-            manager.handleHidden("isthat",event, prefix);
+        if (raw.equalsIgnoreCase("is that")) {
+            System.out.println("sadge");
+            manager.handleHidden("isthat", event, prefix);
         }
 
         // starts with prefix -> send to command handler
@@ -122,7 +123,7 @@ public class Listener extends ListenerAdapter {
     }
 
     User getOwner() {
-        if (owner == null){
+        if (owner == null) {
             return bot.getUserById(Config.get("owner_id"));
         }
         return owner;

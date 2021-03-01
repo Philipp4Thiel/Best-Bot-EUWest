@@ -2,6 +2,7 @@ package JavaLauch;
 
 import JavaLauch.command.*;
 import JavaLauch.command.commands.admin.SetPrefixCommand;
+import JavaLauch.command.commands.hidden.isThatCommand;
 import JavaLauch.command.commands.nonAdmin.*;
 import JavaLauch.command.commands.owner.*;
 import net.dv8tion.jda.api.JDA;
@@ -53,6 +54,7 @@ public class CommandManager {
 
         // adding hidden commands (like help on ping)
         addHiddenCommand(tempHelp);
+        addHiddenCommand(new isThatCommand());
     }
 
     private void addPublicCommand(IPublicCommand cmd) {
