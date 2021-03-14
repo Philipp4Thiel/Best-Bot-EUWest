@@ -85,7 +85,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>/jar</outputDirectory>
+                    <outputDirectory>~/DiscordBot/DEV/jar</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
