@@ -38,7 +38,7 @@ public class CommandManager {
         addOwnerCommand(new PrintInIDECommand());
         addOwnerCommand(new UpTimeCommand());
         addOwnerCommand(new ShutDownCommand());
-        addOwnerCommand(new ReloadCommand());
+        //addOwnerCommand(new ReloadCommand());
         addOwnerCommand(new GetPFPCommand());
         addOwnerCommand(new SetPresenceCommand(bot));
         addOwnerCommand(new NickNameCommand());
