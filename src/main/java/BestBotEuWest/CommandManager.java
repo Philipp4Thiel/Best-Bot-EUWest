@@ -31,7 +31,7 @@ public class CommandManager {
         addPublicCommand(new ReactCommand(bot));
 
         // adding commands visible to @admin
-        //addAdminCommand(new SetPrefixCommand());
+        addAdminCommand(new SetPrefixCommand());
 
         // adding commands visible to owner
         addOwnerCommand(new TestCommand());
