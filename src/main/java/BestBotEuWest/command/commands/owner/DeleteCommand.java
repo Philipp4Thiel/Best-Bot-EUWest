@@ -19,6 +19,7 @@ public class DeleteCommand implements IOwnerCommand {
             return;
         }
         long id = Long.parseLong(ctx.getArgs().get(0));
+        ctx.getMessage().delete().queue();
         ctx.getChannel().deleteMessageById(id).queue();
     }
 

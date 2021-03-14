@@ -1,4 +1,4 @@
-package BestBotEuWest.command.commands.nonAdmin;
+package BestBotEuWest.command.commands.owner;
 
 import BestBotEuWest.ColoredStrings.ColoredStringAsciiDoc;
 import BestBotEuWest.command.CommandContext;

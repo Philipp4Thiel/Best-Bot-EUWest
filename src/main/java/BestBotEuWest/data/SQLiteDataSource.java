@@ -42,7 +42,9 @@ public class SQLiteDataSource {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         ds = new HikariDataSource(config);
 
-        try (final Statement statement = getConnection().createStatement()) {
+        try {
+            final Connection conn = getConnection();
+            final Statement statement = conn.createStatement();
             final String defaultPrefix = Config.get("prefix");
 
             // guild_settings Table

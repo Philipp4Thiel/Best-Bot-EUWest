@@ -21,7 +21,7 @@ public class CommandManager {
 
     private final Set<ICommand> allCommands = new HashSet<>();
 
-    public CommandManager(JDA bot) throws IOException {
+    public CommandManager(JDA bot) {
         // adding commands visible to @everyone
         addPublicCommand(new PingCommand());
         addPublicCommand(new HelpCommand(this));

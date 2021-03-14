@@ -19,7 +19,6 @@ import java.sql.SQLException;
 
 public class Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
-    private final JDA jda;
     private final Listener listener;
 
     private Bot() throws LoginException, SQLException, IOException {
@@ -38,18 +37,17 @@ public class Bot {
 
         LOGGER.info("starting JDA");
 
-        jda =
-                JDABuilder.createDefault(
-                        Config.get("token"),
-                        GatewayIntent.GUILD_MEMBERS,
-                        GatewayIntent.GUILD_MESSAGES,
-                        GatewayIntent.GUILD_VOICE_STATES,
-                        GatewayIntent.GUILD_EMOJIS,
-                        GatewayIntent.DIRECT_MESSAGES
-                )
-                        .setMemberCachePolicy(MemberCachePolicy.ALL)
-                        .setActivity(Activity.playing("ping me for help"))
-                        .build();
+        JDA jda = JDABuilder.createDefault(
+                Config.get("token"),
+                GatewayIntent.GUILD_MEMBERS,
+                GatewayIntent.GUILD_MESSAGES,
+                GatewayIntent.GUILD_VOICE_STATES,
+                GatewayIntent.GUILD_EMOJIS,
+                GatewayIntent.GUILD_MESSAGE_REACTIONS
+        )
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
+                .setActivity(Activity.playing("ping me for help"))
+                .build();
 
         listener = new Listener(jda);
 
