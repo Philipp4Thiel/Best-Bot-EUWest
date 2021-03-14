@@ -28,6 +28,7 @@ public class ReloadCommand implements IOwnerCommand {
             Runtime.getRuntime().exec("bash BotReload.sh");
             System.exit(1);
         } catch (IOException e) {
+            e.printStackTrace();
             LOGGER.info("failed to restart BOT");
             ctx.getChannel().sendMessage("couldn't reload").queue();
         }
