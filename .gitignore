@@ -5,6 +5,4 @@
 /out/
 /target/
 /.env
-/.gitignore
 /JavaLauchBot.iml
-/pom.xml

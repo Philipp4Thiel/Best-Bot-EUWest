@@ -2,7 +2,6 @@ package JavaLauch;
 
 import JavaLauch.command.*;
 import JavaLauch.command.commands.admin.SetPrefixCommand;
-import JavaLauch.command.commands.hidden.isThatCommand;
 import JavaLauch.command.commands.nonAdmin.*;
 import JavaLauch.command.commands.owner.*;
 import net.dv8tion.jda.api.JDA;
@@ -23,16 +22,12 @@ public class CommandManager {
     private final Set<ICommand> allCommands = new HashSet<>();
 
     public CommandManager(JDA bot) throws IOException {
-
-        HelpCommand tempHelp = new HelpCommand(this);
-
         // adding commands visible to @everyone
         addPublicCommand(new PingCommand());
-        addPublicCommand(tempHelp);
+        addPublicCommand(new HelpCommand(this));
         addPublicCommand(new SuggestionsCommand());
         addPublicCommand(new BugReportCommand());
-        addPublicCommand(new SpamCommand());
-        addPublicCommand(new RoleCommand());
+        //addPublicCommand(new RoleCommand());
         addPublicCommand(new ReactCommand(bot));
 
         // adding commands visible to @admin
@@ -48,13 +43,13 @@ public class CommandManager {
         addOwnerCommand(new SetPresenceCommand(bot));
         addOwnerCommand(new NickNameCommand());
         addOwnerCommand(new DeleteCommand());
+        addOwnerCommand(new SpamCommand());
 
         // adding commands usable in the dms of the bot
-        addDmCommand(tempHelp);
+        addDmCommand(new HelpCommand(this));
 
         // adding hidden commands (like help on ping)
-        addHiddenCommand(tempHelp);
-        addHiddenCommand(new isThatCommand());
+        addHiddenCommand(new HelpCommand(this));
     }
 
     private void addPublicCommand(IPublicCommand cmd) {

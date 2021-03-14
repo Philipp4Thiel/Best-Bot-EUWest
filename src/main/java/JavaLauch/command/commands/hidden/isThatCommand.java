@@ -2,6 +2,7 @@ package JavaLauch.command.commands.hidden;
 
 import JavaLauch.command.CommandContext;
 import JavaLauch.command.IHiddenCommand;
+import net.dv8tion.jda.api.entities.Message;
 
 public class isThatCommand implements IHiddenCommand {
     @Override
@@ -11,6 +12,7 @@ public class isThatCommand implements IHiddenCommand {
 
     @Override
     public void handleHidden(CommandContext ctx) {
-        ctx.getMessage().reply("definitely not a supra").queue();
+        Message msg = ctx.getMessage().reply(".").complete();
+        msg.editMessage("definitely not a supra").queue();
     }
 }

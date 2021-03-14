@@ -111,11 +111,6 @@ public class Listener extends ListenerAdapter {
             manager.handleHidden("help", event, prefix);
         }
 
-        if (raw.equalsIgnoreCase("is that")) {
-            System.out.println("sadge");
-            manager.handleHidden("isthat", event, prefix);
-        }
-
         // starts with prefix -> send to command handler
         if (raw.startsWith(prefix)) {
             manager.handle(event, prefix);
@@ -219,7 +214,6 @@ public class Listener extends ListenerAdapter {
         try {
             user = bot.getUserById(id);
         } catch (Exception e) {
-            user = null;
             sendDM(owner, e.getMessage());
             return;
         }
