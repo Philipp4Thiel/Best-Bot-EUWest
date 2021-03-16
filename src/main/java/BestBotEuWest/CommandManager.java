@@ -34,6 +34,7 @@ public class CommandManager {
         addAdminCommand(new SetPrefixCommand());
 
         // adding commands visible to owner
+        addOwnerCommand(new DrawCommand());
         addOwnerCommand(new TestCommand());
         addOwnerCommand(new PrintInIDECommand());
         addOwnerCommand(new UpTimeCommand());
