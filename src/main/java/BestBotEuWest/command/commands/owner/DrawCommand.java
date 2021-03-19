@@ -39,6 +39,16 @@ public class DrawCommand implements IOwnerCommand {
 
         List<Attachment> attachments = ctx.getMessage().getAttachments();
         if (attachments.size() > 0) {
+            int xOffset = 0;
+            int yOffset = 0;
+
+            try {
+                assert args != null;
+                xOffset = Integer.parseInt(args.get(0));
+                yOffset = Integer.parseInt(args.get(1));
+            } catch (Exception ignored) {
+            }
+
             if (drawchannel == null) {
                 ctx.getMessage().reply("link drawchannel first").queue();
                 return;
@@ -86,13 +96,14 @@ public class DrawCommand implements IOwnerCommand {
         StringBuilder msg = new StringBuilder();
         int counter = 1;
         for (DrawingTasks task : running) {
-            msg.append(String.format("%2d. Task: %4.3f%%%n", counter++, task.getProgress()*100));
+            msg.append(String.format("%2d. Task: %4.3f%%%n", counter++, task.getProgress() * 100));
         }
         if (msg.toString().equals("")) {
             ctx.getMessage().reply("no tasks running atm").queue();
             return;
         }
         ctx.getMessage().reply(msg).queue();
+        return;
     }
 
 
@@ -125,6 +136,10 @@ public class DrawCommand implements IOwnerCommand {
     }
 
     private File turnIntoInstructions(File input) throws IOException {
+        return turnIntoInstructions(input, 0, 0);
+    }
+
+    private File turnIntoInstructions(File input, int xOffset, int yOffset) throws IOException {
         String path = input.getPath() + ".draw";
         FileWriter output = new FileWriter(path);
         BufferedImage image = ImageIO.read(input);
@@ -142,7 +157,7 @@ public class DrawCommand implements IOwnerCommand {
                 int blue = pixel & 0xff;
 
                 if (alpha == 255) {
-                    String instruction = String.format("dev.place setpixel %d %d #%s%s%s", x, y, Integer.toHexString(red), Integer.toHexString(green), Integer.toHexString(blue));
+                    String instruction = String.format("dev.place setpixel %d %d #%s%s%s", x + xOffset, y + yOffset, Integer.toHexString(red), Integer.toHexString(green), Integer.toHexString(blue));
                     lines.add(instruction);
                 }
             }
