@@ -162,6 +162,9 @@ public class DrawCommand implements IOwnerCommand {
                 }
             }
         }
+
+        Collections.shuffle(lines);
+
         int size = lines.size();
         output.write("" + size);
         for (String line : lines) {
