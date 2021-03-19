@@ -157,7 +157,7 @@ public class DrawCommand implements IOwnerCommand {
                 int blue = pixel & 0xff;
 
                 if (alpha == 255) {
-                    String instruction = String.format("dev.place setpixel %d %d #%s%s%s", x + xOffset, y + yOffset, Integer.toHexString(red), Integer.toHexString(green), Integer.toHexString(blue));
+                    String instruction = String.format(".place setpixel %d %d #%s%s%s", x + xOffset, y + yOffset, Integer.toHexString(red), Integer.toHexString(green), Integer.toHexString(blue));
                     lines.add(instruction);
                 }
             }
