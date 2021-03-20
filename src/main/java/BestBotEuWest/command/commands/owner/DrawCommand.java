@@ -5,6 +5,7 @@ import BestBotEuWest.command.CommandContext;
 import BestBotEuWest.command.IOwnerCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -19,6 +20,11 @@ import java.util.*;
 public class DrawCommand implements IOwnerCommand {
 
     private TextChannel drawchannel = null;
+    private Emote bar0 = null;
+    private Emote bar25 = null;
+    private Emote bar50 = null;
+    private Emote bar75 = null;
+    private Emote bar100 = null;
 
     final HashSet<DrawingTasks> running = new HashSet<>();
 
@@ -31,9 +37,26 @@ public class DrawCommand implements IOwnerCommand {
     public void handleOwner(CommandContext ctx) {
         List<String> args = ctx.getArgs();
 
-        if (args != null && !args.isEmpty() && args.get(0).equals("link")) {
+        if (args != null && !args.isEmpty() && args.get(0).equalsIgnoreCase("linkChannel")) {
             drawchannel = ctx.getChannel();
             ctx.getMessage().reply("linked this channel to spam instructions in").queue();
+            return;
+        }
+
+        if (args != null && !args.isEmpty() && args.get(0).equalsIgnoreCase("linkEmotes")) {
+            List<Emote> emotes = ctx.getMessage().getEmotes();
+            if (emotes.size() != 5) {
+                ctx.getMessage().reply("can't find 5 emotes");
+                return;
+            }
+            bar0 = emotes.get(0);
+            bar25 = emotes.get(1);
+            bar50 = emotes.get(2);
+            bar75 = emotes.get(3);
+            bar100 = emotes.get(4);
+            ctx.getMessage().reply(String.format(
+                    "Set %s as 0%% emote.%nSet %s as 25%% emote.%nSet %s as 50%% emote.%nSet %s as 75%% emote.%nSet %s as 100%% emote.%n",
+                    bar0.getAsMention(), bar25.getAsMention(), bar50.getAsMention(), bar75.getAsMention(), bar100.getAsMention())).queue();
             return;
         }
 
@@ -83,26 +106,45 @@ public class DrawCommand implements IOwnerCommand {
                 return;
             }
         }
-        /*
-         * TODO
-         *  return for each element in [workingOn] the current status
-         *  using these emotes:
-         *      :0percent:
-         *      :25percent:
-         *      :50percent:
-         *      :75percent:
-         *      :100percent:
-         */
+
         StringBuilder msg = new StringBuilder();
         int counter = 1;
         for (DrawingTasks task : running) {
-            msg.append(String.format("%2d. Task: %4.3f%%%n", counter++, task.getProgress() * 100));
+            msg.append(String.format("%2d. Task: %4.3f%% (%s)%n", counter++, task.getProgress() * 100, task.getDone()));
+            if (bar0 != null && bar25 != null && bar50 != null && bar75 != null && bar100 != null) {
+                int asInt = (int) (task.getProgress() * 40);
+                int full = asInt / 4;
+                String bar = "";
+                bar += bar100.getAsMention().repeat(full);
+                if (full < 10) {
+                    int filler = asInt % 4;
+                    switch (filler) {
+                        case 0:
+                            bar += bar0.getAsMention();
+                            break;
+                        case 1:
+                            bar += bar25.getAsMention();
+                            break;
+                        case 2:
+                            bar += bar50.getAsMention();
+                            break;
+                        case 3:
+                            bar += bar75.getAsMention();
+                            break;
+                    }
+                    if (full < 9) {
+                        int empty = 9 - full;
+                        bar += bar0.getAsMention().repeat(empty);
+                    }
+                }
+                msg.append(bar).append("\n");
+            }
         }
         if (msg.toString().equals("")) {
             ctx.getMessage().reply("no tasks running atm").queue();
             return;
         }
-        ctx.getMessage().reply(msg).queue();
+        ctx.getMessage().reply(msg + "||still need to implement live update||").queue();
         return;
     }
 
@@ -218,6 +260,10 @@ public class DrawCommand implements IOwnerCommand {
 
         synchronized double getProgress() {
             return ((double) progress) / total;
+        }
+
+        public Object getDone() {
+            return String.format("(%d/%d)", progress, total);
         }
     }
 }
