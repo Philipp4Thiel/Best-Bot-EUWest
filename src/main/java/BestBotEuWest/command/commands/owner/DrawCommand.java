@@ -263,7 +263,7 @@ public class DrawCommand implements IOwnerCommand {
         }
 
         public Object getDone() {
-            return String.format("(%d/%d)", progress, total);
+            return String.format("%d/%d", progress, total);
         }
     }
 }
