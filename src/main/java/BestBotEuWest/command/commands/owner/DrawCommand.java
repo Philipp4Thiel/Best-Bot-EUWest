@@ -192,7 +192,7 @@ public class DrawCommand implements IOwnerCommand, IHiddenCommand {
         Thread drawThread = new Thread(() -> {
             DrawingTasks task = new DrawingTasks(length);
             running.add(task);
-            for (int i = 1; i < length; i++) {
+            for (int i = 1; i <= length; i++) {
                 String line = drawCommands[i];
                 if (line.equals("")) {
                     continue;

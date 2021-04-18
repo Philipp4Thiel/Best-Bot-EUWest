@@ -22,6 +22,7 @@ public class CommandManager {
     private final Set<ICommand> allCommands = new HashSet<>();
 
     public CommandManager(JDA bot) {
+        DrawCommand drawCMD = new DrawCommand();
         // adding commands visible to @everyone
         addPublicCommand(new PingCommand());
         addPublicCommand(new HelpCommand(this));
@@ -34,7 +35,7 @@ public class CommandManager {
         addAdminCommand(new SetPrefixCommand());
 
         // adding commands visible to owner
-        addOwnerCommand(new DrawCommand());
+        addOwnerCommand(drawCMD);
         addOwnerCommand(new TestCommand());
         addOwnerCommand(new PrintInIDECommand());
         addOwnerCommand(new UpTimeCommand());
@@ -51,7 +52,7 @@ public class CommandManager {
 
         // adding hidden commands (like help on ping)
         addHiddenCommand(new HelpCommand(this));
-        addHiddenCommand(new DrawCommand());
+        addHiddenCommand(drawCMD);
     }
 
     private void addPublicCommand(IPublicCommand cmd) {
@@ -163,7 +164,6 @@ public class CommandManager {
 
         IHiddenCommand hiddenCommand = searchHiddenCommand(cmdName.toLowerCase());
         if (hiddenCommand != null) {
-            event.getChannel().sendTyping().queue();
             CommandContext ctx = new CommandContext(event, null);
             hiddenCommand.handleHidden(ctx);
         }
