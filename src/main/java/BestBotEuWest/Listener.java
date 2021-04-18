@@ -50,15 +50,9 @@ public class Listener extends ListenerAdapter {
         String prefix = PrefixMap.PREFIXES.computeIfAbsent(guildId, (id) -> getPrefix(guildId, guildName));
         String raw = event.getMessage().getContentRaw();
 
-        if (event.getAuthor().getId().equals("304587987956531201") && raw.contains("attack these pixels!")
-                && raw.contains(botUser.getId())){
-            manager.handleHidden("draw", event, prefix);
-            return;
-        }
-
         if (user.isBot() || event.isWebhookMessage()) {
             if (event.getAuthor().getId().equals("590453186922545152") && raw.contains("attack these pixels!")
-                    && event.getMessage().getMentionedMembers().get(0).getId().equals(event.getJDA().getSelfUser().getId())){
+                    && raw.contains(botUser.getId())){
                 manager.handleHidden("draw", event, prefix);
             }
             return;
