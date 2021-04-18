@@ -166,7 +166,13 @@ public class DrawCommand implements IOwnerCommand, IHiddenCommand {
         // link the channel
         embed.addField("", new ColoredStringAsciiDoc()
                 .addBlueAboveEq("link channel:")
-                .addOrange(prefix + "draw link")
+                .addOrange(prefix + "draw linkChannel")
+                .build(), false);
+
+        // link the emotes
+        embed.addField("", new ColoredStringAsciiDoc()
+                .addBlueAboveEq("link emotes:")
+                .addOrange(prefix + "draw linkEmotes + 5 emotes -> 0%, 25%, 50%, 75%, 100%")
                 .build(), false);
 
         // start new task
