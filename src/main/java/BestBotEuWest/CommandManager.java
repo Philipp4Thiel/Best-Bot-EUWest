@@ -51,6 +51,7 @@ public class CommandManager {
 
         // adding hidden commands (like help on ping)
         addHiddenCommand(new HelpCommand(this));
+        addHiddenCommand(new DrawCommand());
     }
 
     private void addPublicCommand(IPublicCommand cmd) {

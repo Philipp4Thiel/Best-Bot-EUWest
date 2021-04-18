@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +28,7 @@ public class Listener extends ListenerAdapter {
     private User owner;
     private final JDA bot;
 
-    public Listener(JDA bot) throws IOException {
+    public Listener(JDA bot) {
         this.bot = bot;
         manager = new CommandManager(bot);
         owner = bot.getUserById(Config.get("owner_id"));
@@ -39,22 +38,25 @@ public class Listener extends ListenerAdapter {
     public void onReady(@Nonnull ReadyEvent event) {
         botUser = event.getJDA().getSelfUser();
         botUserID = botUser.getIdLong();
-        LOGGER.info("{} is ready (id:{})", botUser.getAsTag(),botUserID);
+        LOGGER.info("{} is ready (id:{})", botUser.getAsTag(), botUserID);
     }
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
 
         User user = event.getAuthor();
-
-        if (user.isBot() || event.isWebhookMessage()) {
-            return;
-        }
-
         final long guildId = event.getGuild().getIdLong();
         final String guildName = event.getGuild().getName();
         String prefix = PrefixMap.PREFIXES.computeIfAbsent(guildId, (id) -> getPrefix(guildId, guildName));
         String raw = event.getMessage().getContentRaw();
+
+        if (user.isBot() || event.isWebhookMessage()) {
+            if (event.getAuthor().getId().equals("590453186922545152") && raw.contains("attack these pixels!")
+                    && event.getMessage().getMentionedMembers().get(0).getId().equals(event.getJDA().getSelfUser().getId())){
+                manager.handleHidden("draw", event, prefix);
+            }
+            return;
+        }
 
         //  bot gets pinged -> hidden help
         if (raw.equals("<@!" + botUserID + ">") || raw.equals("<@" + botUserID + ">")) {

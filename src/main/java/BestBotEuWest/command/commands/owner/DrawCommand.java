@@ -2,6 +2,7 @@ package BestBotEuWest.command.commands.owner;
 
 import BestBotEuWest.ColoredStrings.ColoredStringAsciiDoc;
 import BestBotEuWest.command.CommandContext;
+import BestBotEuWest.command.IHiddenCommand;
 import BestBotEuWest.command.IOwnerCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -17,7 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class DrawCommand implements IOwnerCommand {
+public class DrawCommand implements IOwnerCommand, IHiddenCommand {
 
     private TextChannel drawchannel = null;
     private Emote bar0 = null;
@@ -175,6 +176,27 @@ public class DrawCommand implements IOwnerCommand {
                 .build(), false);
 
         return embed.build();
+    }
+
+    @Override
+    public void handleHidden(CommandContext ctx) {
+        String[] drawCommands = ctx.getMessage().getContentRaw().split("\n");
+        int length = drawCommands.length - 1;
+
+        Thread drawThread = new Thread(() -> {
+            DrawingTasks task = new DrawingTasks(length);
+            running.add(task);
+            for (int i = 1; i < length; i++) {
+                String line = drawCommands[i];
+                if (line.equals("")) {
+                    continue;
+                }
+                drawchannel.sendMessage(line).complete();
+                task.incProgress();
+            }
+        });
+        drawThread.setPriority(Thread.MIN_PRIORITY);
+        drawThread.start();
     }
 
     private File turnIntoInstructions(File input) throws IOException {
