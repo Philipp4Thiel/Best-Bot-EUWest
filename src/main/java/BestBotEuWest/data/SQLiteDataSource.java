@@ -40,6 +40,12 @@ public class SQLiteDataSource {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setMinimumIdle(5);
+        config.setMaximumPoolSize(50);
+        config.setConnectionTimeout(10000);
+        config.setIdleTimeout(10000);
+        config.setMaxLifetime(10000);
+
         ds = new HikariDataSource(config);
 
         try {
@@ -49,44 +55,50 @@ public class SQLiteDataSource {
 
             // guild_settings Table
             // language=SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS guild_settings (" +
+            statement.execute(""+
+                    "CREATE TABLE IF NOT EXISTS guild_settings (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "guild_id VARCHAR(20) NOT NULL," +
                     "guild_name VARCHAR(20) NOT NULL," +
                     "prefix VARCHAR(255) NOT NULL DEFAULT '" + defaultPrefix + "'" +
-                    ");");
+                    ");"
+            );
 
             LOGGER.info("guild_settings Table initialised"); // suggestions
 
             // suggestion Table
             // language-SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS suggestions (" +
+            statement.execute(""+
+                    "CREATE TABLE IF NOT EXISTS suggestions (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "user_name VARCHAR(20) NOT NULL," +
                     "guild_name VARCHAR(20) NOT NULL," +
                     "suggestion VARCHAR(255) NOT NULL" +
-                    ");");
+                    ");"
+            );
 
-            LOGGER.info("suggestions Table initialised");
+            LOGGER.info("suggestions table initialised");
 
             // bug Table
             // language-SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS bugreports (" +
+            statement.execute(""+
+                    "CREATE TABLE IF NOT EXISTS bugreports (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "user_name VARCHAR(20) NOT NULL," +
                     "guild_name VARCHAR(20) NOT NULL," +
                     "bug VARCHAR(255) NOT NULL" +
-                    ");");
+                    ");"
+            );
 
-            LOGGER.info("bugreport Table initialised");
+            LOGGER.info("bugreport table initialised");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.info("could not initialize tables");
         }
-
     }
 
     private SQLiteDataSource() {
+        //empty constructor so static block gets loaded
     }
 
     public static Connection getConnection() throws SQLException {

@@ -3,6 +3,7 @@ package BestBotEuWest.command.commands.nonAdmin;
 import BestBotEuWest.ColoredStrings.ColoredStringAsciiDoc;
 import BestBotEuWest.CommandManager;
 import BestBotEuWest.command.*;
+import BestBotEuWest.command.CommandContext;
 import BestBotEuWest.data.PrefixMap;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -137,13 +138,13 @@ public class HelpCommand implements IPublicCommand, IHiddenCommand, IDmCommand {
     @Override
     public void handleHidden(CommandContext ctx) {
         switch (ctx.getPermissionLevel()) {
-            case 0:
+            case PLEB:
                 handlePublic(ctx);
                 break;
-            case 1:
+            case ADMIN:
                 handleAdmin(ctx);
                 break;
-            case 2:
+            case OWNER:
                 handleOwner(ctx);
                 break;
         }

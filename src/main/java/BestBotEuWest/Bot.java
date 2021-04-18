@@ -63,7 +63,7 @@ public class Bot {
             owner = bot.listener.getOwner();
         }
 
-        LOGGER.info("found owner " + owner.getAsTag());
+        LOGGER.info("found owner: " + owner.getAsTag());
         owner.openPrivateChannel().complete().sendMessage("found you").queue();
     }
 }

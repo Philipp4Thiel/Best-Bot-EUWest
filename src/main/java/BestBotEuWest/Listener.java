@@ -20,34 +20,30 @@ import java.sql.SQLException;
 
 public class Listener extends ListenerAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
-
+    private final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
     private final CommandManager manager;
-
-    private SelfUser botUser;
-    private long botUserID;
-    private User owner;
+    private final long botUserID;
+    private final User owner;
     private final JDA bot;
 
-    public Listener(JDA bot) throws IOException {
+    public Listener(JDA bot) {
         this.bot = bot;
+        botUserID = bot.getSelfUser().getIdLong();
         manager = new CommandManager(bot);
         owner = bot.getUserById(Config.get("owner_id"));
     }
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        botUser = event.getJDA().getSelfUser();
-        botUserID = botUser.getIdLong();
-        LOGGER.info("{} is ready (id:{})", botUser.getAsTag(),botUserID);
+        LOGGER.info("{} is ready", event.getJDA().getSelfUser().getAsTag());
     }
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
 
-        User user = event.getAuthor();
+        User author = event.getAuthor();
 
-        if (user.isBot() || event.isWebhookMessage()) {
+        if (author.isBot() || event.isWebhookMessage()) {
             return;
         }
 

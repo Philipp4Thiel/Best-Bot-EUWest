@@ -9,21 +9,20 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 
+import static BestBotEuWest.command.PermissionLevel.*;
+
 public class CommandContext implements ICommandContext {
 
     private final GuildMessageReceivedEvent event;
     private final List<String> args;
-    private final int permissionLevel;
+    private final PermissionLevel permissionLevel;
 
     public CommandContext(GuildMessageReceivedEvent event, List<String> args) {
         this.event = event;
         this.args = args;
         Member member = this.getMember();
 
-        // owner -> 2
-        // admin -> 1
-        // public -> 0
-        permissionLevel = member.getId().equals(Config.get("owner_id")) ? 2 : member.hasPermission(Permission.ADMINISTRATOR) ? 1 : 0;
+        permissionLevel = member.getId().equals(Config.get("owner_id")) ? OWNER : member.hasPermission(Permission.ADMINISTRATOR) ? ADMIN : PLEB;
     }
 
     @Override
@@ -40,7 +39,8 @@ public class CommandContext implements ICommandContext {
         return this.args;
     }
 
-    public int getPermissionLevel() {
+    public PermissionLevel getPermissionLevel() {
         return this.permissionLevel;
     }
 }
+

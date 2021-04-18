@@ -2,12 +2,12 @@ package BestBotEuWest;
 
 import BestBotEuWest.command.*;
 import BestBotEuWest.command.commands.admin.SetPrefixCommand;
+import BestBotEuWest.command.CommandContext;
 import BestBotEuWest.command.commands.nonAdmin.*;
 import BestBotEuWest.command.commands.owner.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -132,24 +132,24 @@ public class CommandManager {
 
         CommandContext ctx = new CommandContext(event, args);
 
-        int permissionLevel = ctx.getPermissionLevel();
+        PermissionLevel permissionLevel = ctx.getPermissionLevel();
 
         String cmdName = split[0].toLowerCase();
 
         switch (permissionLevel) {
-            case 0:
+            case PLEB:
                 IPublicCommand publicCommand = searchPublicCommand(cmdName);
                 if (publicCommand != null) {
                     publicCommand.handlePublic(ctx);
                 }
                 break;
-            case 1:
+            case ADMIN:
                 IAdminCommand adminCommand = searchAdminCommand(cmdName);
                 if (adminCommand != null) {
                     adminCommand.handleAdmin(ctx);
                 }
                 break;
-            case 2:
+            case OWNER:
                 IOwnerCommand ownerCommand = searchOwnerCommand(cmdName);
                 if (ownerCommand != null) {
                     ownerCommand.handleOwner(ctx);
