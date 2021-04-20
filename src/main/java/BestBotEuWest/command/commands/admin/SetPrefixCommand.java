@@ -45,6 +45,8 @@ public class SetPrefixCommand implements IAdminCommand {
         // update prefix
         String newPrefix = String.join("", args);
 
+
+        newPrefix.replace("\\ws", " ");
         if (newPrefix.equals("please")){
             newPrefix = "please ";
         }
