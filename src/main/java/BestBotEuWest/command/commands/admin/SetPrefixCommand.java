@@ -46,8 +46,8 @@ public class SetPrefixCommand implements IAdminCommand {
         String newPrefix = String.join("", args);
 
 
-        newPrefix.replace("\\ws", " ");
-        if (newPrefix.equals("please")){
+        newPrefix = newPrefix.replace("\\ws", " ");
+        if (newPrefix.equals("please")) {
             newPrefix = "please ";
         }
 
@@ -80,7 +80,7 @@ public class SetPrefixCommand implements IAdminCommand {
     public MessageEmbed getAdminHelp(String prefix) {
         EmbedBuilder embed = EmbedUtils.getDefaultEmbed();
 
-        embed.setTitle("Help page of: `" + getName()+"`");
+        embed.setTitle("Help page of: `" + getName() + "`");
         embed.setDescription("A command for admins to change the prefix of the bot on this server.");
 
         // general use
