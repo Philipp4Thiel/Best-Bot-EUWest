@@ -6,122 +6,45 @@ import BestBotEuWest.command.commands.nonAdmin.*;
 import BestBotEuWest.command.commands.owner.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class CommandManager {
-
-    private final List<IPublicCommand> publicCommands = new ArrayList<>();
-    private final List<IAdminCommand> adminCommands = new ArrayList<>();
-    private final List<IOwnerCommand> ownerCommands = new ArrayList<>();
-    private final List<IDmCommand> dmCommands = new ArrayList<>();
-    private final List<IHiddenCommand> hiddenCommands = new ArrayList<>();
-
     private final Set<ICommand> allCommands = new HashSet<>();
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
+
     public CommandManager(JDA bot) {
-        DrawCommand drawCMD = new DrawCommand();
-        // adding commands visible to @everyone
-        addPublicCommand(new PingCommand());
-        addPublicCommand(new HelpCommand(this));
-        addPublicCommand(new SuggestionsCommand());
-        addPublicCommand(new BugReportCommand());
-        //addPublicCommand(new RoleCommand());
-        addPublicCommand(new ReactCommand(bot));
-
-        // adding commands visible to @admin
-        addAdminCommand(new SetPrefixCommand());
-
-        // adding commands visible to owner
-        addOwnerCommand(drawCMD);
-        addOwnerCommand(new TestCommand());
-        addOwnerCommand(new PrintInIDECommand());
-        addOwnerCommand(new UpTimeCommand());
-        addOwnerCommand(new ShutDownCommand());
-        addOwnerCommand(new ReloadCommand());
-        addOwnerCommand(new GetPFPCommand());
-        addOwnerCommand(new SetPresenceCommand(bot));
-        addOwnerCommand(new NickNameCommand());
-        addOwnerCommand(new DeleteCommand());
-        addOwnerCommand(new SpamCommand());
-
-        // adding commands usable in the dms of the bot
-        addDmCommand(new HelpCommand(this));
-
-        // adding hidden commands (like help on ping)
-        addHiddenCommand(new HelpCommand(this));
-        addHiddenCommand(drawCMD);
+        addCommand(new PingCommand());
+        addCommand(new HelpCommand(this));
+        addCommand(new SuggestionsCommand());
+        addCommand(new BugReportCommand());
+        addCommand(new ReactCommand(bot));
+        addCommand(new SetPrefixCommand());
+        addCommand(new DrawCommand());
+        addCommand(new TestCommand());
+        addCommand(new PrintInIDECommand());
+        addCommand(new UpTimeCommand());
+        addCommand(new ShutDownCommand());
+        addCommand(new ReloadCommand());
+        addCommand(new GetPFPCommand());
+        addCommand(new SetPresenceCommand(bot));
+        addCommand(new NickNameCommand());
+        addCommand(new DeleteCommand());
+        addCommand(new SpamCommand());
+        addCommand(new ActiveLoopCommand(this));
     }
 
-    private void addPublicCommand(IPublicCommand cmd) {
-        addAdminCommand(cmd); // admins can use @everyone commands as well
-
-        boolean nameFound = this.publicCommands.stream().anyMatch(
-                (it) -> it.getName().equalsIgnoreCase(cmd.getName())
-        );
-
-        if (nameFound) {
-            throw new IllegalArgumentException("A command with this name is already present");
+    private void addCommand(ICommand cmd) {
+        if (allCommands.stream().anyMatch((it) -> it.getClass().equals(cmd.getClass()))) {
+            LOGGER.info(cmd.getName() + "is already in known commands");
+            return;
         }
 
-        publicCommands.add(cmd);
-        addCommand(cmd);
-    }
-
-    public void addAdminCommand(IAdminCommand cmd) {
-        addOwnerCommand(cmd); // owner can use @admin commands as well
-
-        boolean nameFound = this.adminCommands.stream().anyMatch(
-                (it) -> it.getName().equalsIgnoreCase(cmd.getName())
-        );
-
-        if (nameFound) {
-            throw new IllegalArgumentException("A command with this name is already present");
-        }
-
-        adminCommands.add(cmd);
-        addCommand(cmd);
-    }
-
-    public void addOwnerCommand(IOwnerCommand cmd) {
-        boolean nameFound = this.ownerCommands.stream().anyMatch(
-                (it) -> it.getName().equalsIgnoreCase(cmd.getName())
-        );
-
-        if (nameFound) {
-            throw new IllegalArgumentException("A command with this name is already present");
-        }
-
-        ownerCommands.add(cmd);
-        addCommand(cmd);
-    }
-
-    public void addDmCommand(IDmCommand cmd) {
-        boolean nameFound = this.dmCommands.stream().anyMatch(
-                (it) -> it.getName().equalsIgnoreCase(cmd.getName())
-        );
-
-        if (nameFound) {
-            throw new IllegalArgumentException("A command with this name is already present");
-        }
-
-        dmCommands.add(cmd);
-        addCommand(cmd);
-    }
-
-    public void addHiddenCommand(IHiddenCommand cmd) {
-        boolean nameFound = this.hiddenCommands.stream().anyMatch(
-                (it) -> it.getName().equalsIgnoreCase(cmd.getName())
-        );
-
-        if (nameFound) {
-            throw new IllegalArgumentException("A command with this name is already present");
-        }
-
-        hiddenCommands.add(cmd);
-        addCommand(cmd);
+        allCommands.add(cmd);
     }
 
     void handle(GuildMessageReceivedEvent event, String prefix) {
@@ -162,7 +85,7 @@ public class CommandManager {
 
     void handleHidden(String cmdName, GuildMessageReceivedEvent event, String prefix) {
 
-        IHiddenCommand hiddenCommand = searchHiddenCommand(cmdName.toLowerCase());
+        IHiddenCommand hiddenCommand = searchHiddenCommand(cmdName);
         if (hiddenCommand != null) {
             CommandContext ctx = new CommandContext(event, null);
             hiddenCommand.handleHidden(ctx);
@@ -172,9 +95,11 @@ public class CommandManager {
     public IOwnerCommand searchOwnerCommand(String search) {
         String searchLower = search.toLowerCase();
 
-        for (IOwnerCommand cmd : ownerCommands) {
-            if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
-                return cmd;
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IOwnerCommand) {
+                if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
+                    return (IOwnerCommand) cmd;
+                }
             }
         }
 
@@ -184,9 +109,11 @@ public class CommandManager {
     public IAdminCommand searchAdminCommand(String search) {
         String searchLower = search.toLowerCase();
 
-        for (IAdminCommand cmd : adminCommands) {
-            if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
-                return cmd;
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IAdminCommand) {
+                if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
+                    return (IAdminCommand) cmd;
+                }
             }
         }
 
@@ -196,9 +123,11 @@ public class CommandManager {
     public IPublicCommand searchPublicCommand(String search) {
         String searchLower = search.toLowerCase();
 
-        for (IPublicCommand cmd : publicCommands) {
-            if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
-                return cmd;
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IPublicCommand) {
+                if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
+                    return (IPublicCommand) cmd;
+                }
             }
         }
 
@@ -208,9 +137,11 @@ public class CommandManager {
     public IDmCommand searchDmCommand(String search) {
         String searchLower = search.toLowerCase();
 
-        for (IDmCommand cmd : dmCommands) {
-            if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
-                return cmd;
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IDmCommand) {
+                if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
+                    return (IDmCommand) cmd;
+                }
             }
         }
 
@@ -220,9 +151,11 @@ public class CommandManager {
     public IHiddenCommand searchHiddenCommand(String search) {
         String searchLower = search.toLowerCase();
 
-        for (IHiddenCommand cmd : hiddenCommands) {
-            if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
-                return cmd;
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IHiddenCommand) {
+                if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
+                    return (IHiddenCommand) cmd;
+                }
             }
         }
 
@@ -230,30 +163,60 @@ public class CommandManager {
     }
 
     public List<IPublicCommand> getPublicCommands() {
-        return publicCommands;
+        List<IPublicCommand> toReturn = new LinkedList<>();
+        for (ICommand cmd:allCommands){
+            if (cmd instanceof IPublicCommand){
+                toReturn.add((IPublicCommand) cmd);
+            }
+        }
+        return toReturn;
     }
 
     public List<IAdminCommand> getAdminCommands() {
-        return adminCommands;
+        List<IAdminCommand> toReturn = new LinkedList<>();
+        for (ICommand cmd:allCommands){
+            if (cmd instanceof IAdminCommand){
+                toReturn.add((IAdminCommand) cmd);
+            }
+        }
+        return toReturn;
     }
 
     public List<IOwnerCommand> getOwnerCommands() {
-        return ownerCommands;
+        List<IOwnerCommand> toReturn = new LinkedList<>();
+        for (ICommand cmd:allCommands){
+            if (cmd instanceof IOwnerCommand){
+                toReturn.add((IOwnerCommand) cmd);
+            }
+        }
+        return toReturn;
     }
 
     public List<IDmCommand> getDmCommands() {
-        return dmCommands;
+        List<IDmCommand> toReturn = new LinkedList<>();
+        for (ICommand cmd:allCommands){
+            if (cmd instanceof IDmCommand){
+                toReturn.add((IDmCommand) cmd);
+            }
+        }
+        return toReturn;
     }
 
     public List<IHiddenCommand> getHiddenCommands() {
-        return hiddenCommands;
+        List<IHiddenCommand> toReturn = new LinkedList<>();
+        for (ICommand cmd:allCommands){
+            if (cmd instanceof IHiddenCommand){
+                toReturn.add((IHiddenCommand) cmd);
+            }
+        }
+        return toReturn;
     }
 
     public Set<ICommand> getAllCommands() {
         return allCommands;
     }
 
-    private void addCommand(ICommand newCmd) {
+    /*private void addCommand(ICommand newCmd) {
         for (ICommand cmd :allCommands){
             if(newCmd.getClass().equals(cmd.getClass())){
                 return;
@@ -261,7 +224,7 @@ public class CommandManager {
         }
 
         allCommands.add(newCmd);
-    }
+    }*/
 }
 
 

@@ -21,7 +21,7 @@ public class Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
     private final Listener listener;
 
-    private Bot() throws LoginException, SQLException, IOException {
+    private Bot() throws LoginException, SQLException {
         LOGGER.info("starting Bot");
 
 
