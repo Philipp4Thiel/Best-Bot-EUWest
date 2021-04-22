@@ -6,7 +6,7 @@ public interface ICommand {
 
     String getName();
 
-    //String standardizedHelp();
+    //TODO String standardizedHelp();
 
     default List<String> getAliases() {
         return List.of();

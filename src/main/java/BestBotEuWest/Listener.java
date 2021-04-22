@@ -28,10 +28,10 @@ public class Listener extends ListenerAdapter {
     private User owner;
     private final JDA bot;
 
-    public Listener(JDA bot) {
-        this.bot = bot;
-        manager = new CommandManager(bot);
-        owner = bot.getUserById(Config.get("owner_id"));
+    public Listener(JDA jda) {
+        this.bot = jda;
+        manager = new CommandManager(jda, this);
+        owner = jda.getUserById(Config.get("owner_id"));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Listener extends ListenerAdapter {
 
         if (user.isBot() || event.isWebhookMessage()) {
             if (event.getAuthor().getId().equals("590453186922545152") && raw.contains("attack these pixels!")
-                    && raw.contains(botUser.getId())){
+                    && raw.contains(botUser.getId())) {
                 manager.handleHidden("draw", event, prefix);
             }
             return;
@@ -69,9 +69,9 @@ public class Listener extends ListenerAdapter {
         }
     }
 
-    User getOwner() {
+    public User getOwner() {
         if (owner == null) {
-            return bot.getUserById(Config.get("owner_id"));
+            owner = bot.getUserById(Config.get("owner_id"));
         }
         return owner;
     }

@@ -1,6 +1,7 @@
 package BestBotEuWest;
 
 import BestBotEuWest.command.*;
+import BestBotEuWest.command.commands.ActiveLoop.FFXIVSaleReminderCommand;
 import BestBotEuWest.command.commands.admin.SetPrefixCommand;
 import BestBotEuWest.command.commands.nonAdmin.*;
 import BestBotEuWest.command.commands.owner.*;
@@ -17,12 +18,12 @@ public class CommandManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
 
-    public CommandManager(JDA bot) {
+    public CommandManager(JDA jda,Listener listener) {
         addCommand(new PingCommand());
         addCommand(new HelpCommand(this));
         addCommand(new SuggestionsCommand());
         addCommand(new BugReportCommand());
-        addCommand(new ReactCommand(bot));
+        addCommand(new ReactCommand(jda));
         addCommand(new SetPrefixCommand());
         addCommand(new DrawCommand());
         addCommand(new TestCommand());
@@ -31,11 +32,12 @@ public class CommandManager {
         addCommand(new ShutDownCommand());
         addCommand(new ReloadCommand());
         addCommand(new GetPFPCommand());
-        addCommand(new SetPresenceCommand(bot));
+        addCommand(new SetPresenceCommand(jda));
         addCommand(new NickNameCommand());
         addCommand(new DeleteCommand());
         addCommand(new SpamCommand());
         addCommand(new ActiveLoopCommand(this));
+        addCommand(new FFXIVSaleReminderCommand(listener));
     }
 
     private void addCommand(ICommand cmd) {
@@ -43,7 +45,6 @@ public class CommandManager {
             LOGGER.info(cmd.getName() + "is already in known commands");
             return;
         }
-
         allCommands.add(cmd);
     }
 
@@ -164,8 +165,8 @@ public class CommandManager {
 
     public List<IPublicCommand> getPublicCommands() {
         List<IPublicCommand> toReturn = new LinkedList<>();
-        for (ICommand cmd:allCommands){
-            if (cmd instanceof IPublicCommand){
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IPublicCommand) {
                 toReturn.add((IPublicCommand) cmd);
             }
         }
@@ -174,8 +175,8 @@ public class CommandManager {
 
     public List<IAdminCommand> getAdminCommands() {
         List<IAdminCommand> toReturn = new LinkedList<>();
-        for (ICommand cmd:allCommands){
-            if (cmd instanceof IAdminCommand){
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IAdminCommand) {
                 toReturn.add((IAdminCommand) cmd);
             }
         }
@@ -184,8 +185,8 @@ public class CommandManager {
 
     public List<IOwnerCommand> getOwnerCommands() {
         List<IOwnerCommand> toReturn = new LinkedList<>();
-        for (ICommand cmd:allCommands){
-            if (cmd instanceof IOwnerCommand){
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IOwnerCommand) {
                 toReturn.add((IOwnerCommand) cmd);
             }
         }
@@ -194,8 +195,8 @@ public class CommandManager {
 
     public List<IDmCommand> getDmCommands() {
         List<IDmCommand> toReturn = new LinkedList<>();
-        for (ICommand cmd:allCommands){
-            if (cmd instanceof IDmCommand){
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IDmCommand) {
                 toReturn.add((IDmCommand) cmd);
             }
         }
@@ -204,8 +205,8 @@ public class CommandManager {
 
     public List<IHiddenCommand> getHiddenCommands() {
         List<IHiddenCommand> toReturn = new LinkedList<>();
-        for (ICommand cmd:allCommands){
-            if (cmd instanceof IHiddenCommand){
+        for (ICommand cmd : allCommands) {
+            if (cmd instanceof IHiddenCommand) {
                 toReturn.add((IHiddenCommand) cmd);
             }
         }
@@ -215,16 +216,6 @@ public class CommandManager {
     public Set<ICommand> getAllCommands() {
         return allCommands;
     }
-
-    /*private void addCommand(ICommand newCmd) {
-        for (ICommand cmd :allCommands){
-            if(newCmd.getClass().equals(cmd.getClass())){
-                return;
-            }
-        }
-
-        allCommands.add(newCmd);
-    }*/
 }
 
 

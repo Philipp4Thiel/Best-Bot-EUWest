@@ -19,6 +19,7 @@ import java.sql.SQLException;
 
 public class Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
+    static User owner;
     private final Listener listener;
 
     private Bot() throws LoginException, SQLException {
@@ -56,11 +57,10 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, SQLException, IOException, InterruptedException {
         Bot bot = new Bot();
-        User owner = null;
 
         while (owner == null) {
-            Thread.sleep(1000);
             owner = bot.listener.getOwner();
+            Thread.sleep(1000);
         }
 
         LOGGER.info("found owner " + owner.getAsTag());
