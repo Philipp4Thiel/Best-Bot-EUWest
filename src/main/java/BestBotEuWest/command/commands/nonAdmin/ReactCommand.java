@@ -6,6 +6,7 @@ import BestBotEuWest.command.IPublicCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class ReactCommand implements IPublicCommand {
@@ -43,7 +44,8 @@ public class ReactCommand implements IPublicCommand {
 
     @Override
     public void handlePublic(CommandContext ctx) {
-        ctx.getChannel().retrieveMessageById(ctx.getArgs().get(1)).complete().addReaction(bot.getEmotesByName(ctx.getArgs().get(0), true).get(0)).complete();
+        for (Emote emote : ctx.getMessage().getEmotes())
+            ctx.getChannel().retrieveMessageById(ctx.getArgs().get(0)).complete().addReaction(emote).complete();
         ctx.getMessage().delete().queue();
     }
 
@@ -57,7 +59,7 @@ public class ReactCommand implements IPublicCommand {
         // general use
         embed.addField("", new ColoredStringAsciiDoc()
                 .addBlueAboveEq("general use:")
-                .addOrange(prefix + "react <emote name> <msg id>")
+                .addOrange(prefix + "react <msg id> <emotes>")
                 .build(), false);
 
         return embed.build();
