@@ -17,7 +17,7 @@ public class StalkCommand implements IOwnerCommand{
     @Override
     public void handleOwner(CommandContext ctx) {
         // TODO add user to stalk list 
-        ctx.getMessage().reply("not yet implemented");       
+        ctx.getMessage().reply("not yet implemented").queue();       
     }
 
     @Override
