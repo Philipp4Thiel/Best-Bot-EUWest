@@ -47,6 +47,7 @@ public class CommandManager {
         addOwnerCommand(new NickNameCommand());
         addOwnerCommand(new DeleteCommand());
         addOwnerCommand(new SpamCommand());
+        addOwnerCommand(new StalkCommand());
 
         // adding commands usable in the dms of the bot
         addDmCommand(new HelpCommand(this));
