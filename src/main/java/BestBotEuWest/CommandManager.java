@@ -30,6 +30,7 @@ public class CommandManager {
         addPublicCommand(new BugReportCommand());
         //addPublicCommand(new RoleCommand());
         addPublicCommand(new ReactCommand(bot));
+        //addPublicCommand(new RoleLBCommand());
 
         // adding commands visible to @admin
         addAdminCommand(new SetPrefixCommand());

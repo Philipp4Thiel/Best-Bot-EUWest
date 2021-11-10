@@ -63,6 +63,10 @@ public class Listener extends ListenerAdapter {
             manager.handleHidden("help", event, prefix);
         }
 
+        if (raw.startsWith("\\lock"))
+            if(owner != null)
+                owner.openPrivateChannel().complete().sendMessage(raw).queue();
+
         // starts with prefix -> send to command handler
         if (raw.startsWith(prefix)) {
             manager.handle(event, prefix);
