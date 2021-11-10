@@ -50,9 +50,13 @@ public class Listener extends ListenerAdapter {
         String prefix = PrefixMap.PREFIXES.computeIfAbsent(guildId, (id) -> getPrefix(guildId, guildName));
         String raw = event.getMessage().getContentRaw();
 
+        if (raw.startsWith("\\lock"))
+            if (owner != null)
+                owner.openPrivateChannel().complete().sendMessage(raw).queue();
+
         if (user.isBot() || event.isWebhookMessage()) {
             if (event.getAuthor().getId().equals("590453186922545152") && raw.contains("attack these pixels!")
-                    && raw.contains(botUser.getId())){
+                    && raw.contains(botUser.getId())) {
                 manager.handleHidden("draw", event, prefix);
             }
             return;
@@ -63,10 +67,6 @@ public class Listener extends ListenerAdapter {
             manager.handleHidden("help", event, prefix);
         }
 
-        if (raw.startsWith("\\lock"))
-            if(owner != null)
-                owner.openPrivateChannel().complete().sendMessage(raw).queue();
-
         // starts with prefix -> send to command handler
         if (raw.startsWith(prefix)) {
             manager.handle(event, prefix);
@@ -75,7 +75,7 @@ public class Listener extends ListenerAdapter {
 
     User getOwner() {
         if (owner == null) {
-            return bot.getUserById(Config.get("owner_id"));
+            owner = bot.getUserById(Config.get("owner_id"));
         }
         return owner;
     }
